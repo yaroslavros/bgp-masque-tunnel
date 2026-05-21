@@ -2,14 +2,14 @@
 
 
 
-WG Working Group                                              Y. N. Here
-Internet-Draft                                    Your Organization Here
-Intended status: Informational                               21 May 2026
+IDR Working Group                                           Y. Rosomakho
+Internet-Draft                                                   Zscaler
+Intended status: Standards Track                             21 May 2026
 Expires: 22 November 2026
 
 
-                           TODO - Your title
-                  draft-todo-yourname-protocol-latest
+              BGP Signaling of MASQUE Tunnel Encapsulation
+                draft-rosomakho-bgp-masque-tunnel-latest
 
 Abstract
 
@@ -20,16 +20,18 @@ About This Document
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://example.com/LATEST.  Status information for this document may
-   be found at https://datatracker.ietf.org/doc/draft-todo-yourname-
-   protocol/.
+   https://yaroslavros.github.io/bgp-masque-tunnel/draft-rosomakho-bgp-
+   masque-tunnel.html.  Status information for this document may be
+   found at https://datatracker.ietf.org/doc/draft-rosomakho-bgp-masque-
+   tunnel/.
 
-   Discussion of this document takes place on the WG Working Group
-   mailing list (mailto:WG@example.com), which is archived at
-   https://example.com/WG.
+   Discussion of this document takes place on the IDR Working Group
+   mailing list (mailto:idr@ietf.org), which is archived at
+   https://mailarchive.ietf.org/arch/browse/idr/.  Subscribe at
+   https://www.ietf.org/mailman/listinfo/idr/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/USER/REPO.
+   https://github.com/yaroslavros/bgp-masque-tunnel.
 
 Status of This Memo
 
@@ -109,6 +111,6 @@ Acknowledgments
 
 Author's Address
 
-   Your Name Here
-   Your Organization Here
-   Email: your.email@example.com
+   Yaroslav Rosomakho
+   Zscaler
+   Email: yrosomakho@zscaler.com
