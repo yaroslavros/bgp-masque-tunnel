@@ -19,35 +19,35 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
-category: info
+title: "BGP Signaling of MASQUE Tunnel Encapsulation"
+abbrev: "BGP MASQUE Tunnel Encapsulation"
+category: std
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-rosomakho-bgp-masque-tunnel-latest
 submissiontype: IETF  # also: "independent", "editorial", "IAB", or "IRTF"
 number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: Routing
+workgroup: IDR Working Group
 keyword:
- - next generation
- - unicorn
- - sparkling distributed ledger
+ - bgp
+ - masque
+ - tunnel
 venue:
-  group: WG
+  group: IDR
   type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  mail: idr@ietf.org
+  arch: https://mailarchive.ietf.org/arch/browse/idr/
+  github: yaroslavros/bgp-masque-tunnel
+  latest: https://yaroslavros.github.io/bgp-masque-tunnel/draft-rosomakho-bgp-masque-tunnel.html
 
 author:
  -
-    fullname: Your Name Here
-    organization: Your Organization Here
-    email: your.email@example.com
+    fullname: Yaroslav Rosomakho
+    organization: Zscaler
+    email: yrosomakho@zscaler.com
 
 normative:
 
