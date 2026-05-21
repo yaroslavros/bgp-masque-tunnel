@@ -4,10 +4,10 @@
 
 This is the working area for the individual Internet-Draft, "BGP Signaling of MASQUE Tunnel Encapsulation".
 
-* [Editor's Copy](https://yaroslavros.github.io/bgp-masque-tunnel/#go.draft-rosomakho-bgp-masque-tunnel.html)
-* [Datatracker Page](https://datatracker.ietf.org/doc/draft-rosomakho-bgp-masque-tunnel)
-* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-rosomakho-bgp-masque-tunnel)
-* [Compare Editor's Copy to Individual Draft](https://yaroslavros.github.io/bgp-masque-tunnel/#go.draft-rosomakho-bgp-masque-tunnel.diff)
+* [Editor's Copy](https://yaroslavros.github.io/bgp-masque-tunnel/#go.draft-rosomakho-idr-bgp-masque-tunnel.html)
+* [Datatracker Page](https://datatracker.ietf.org/doc/draft-rosomakho-idr-bgp-masque-tunnel)
+* [Individual Draft](https://datatracker.ietf.org/doc/html/draft-rosomakho-idr-bgp-masque-tunnel)
+* [Compare Editor's Copy to Individual Draft](https://yaroslavros.github.io/bgp-masque-tunnel/#go.draft-rosomakho-idr-bgp-masque-tunnel.diff)
 
 
 ## Contributing
