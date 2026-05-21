@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: Routing
-workgroup: IDR Working Group
+area: "Routing"
+workgroup: "Border Gateway Protocol"
 keyword:
  - bgp
  - masque
  - tunnel
 venue:
-  group: IDR
-  type: Working Group
-  mail: idr@ietf.org
-  arch: https://mailarchive.ietf.org/arch/browse/idr/
-  github: yaroslavros/bgp-masque-tunnel
-  latest: https://yaroslavros.github.io/bgp-masque-tunnel/draft-rosomakho-bgp-masque-tunnel.html
+  group: "Border Gateway Protocol"
+  type: "Working Group"
+  mail: "bgp@ans.net"
+  arch: "ftp.ans.net:/pub/archive/iwg"
+  github: "yaroslavros/bgp-masque-tunnel"
+  latest: "https://yaroslavros.github.io/bgp-masque-tunnel/draft-rosomakho-bgp-masque-tunnel.html"
 
 author:
  -
