@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-11T02:14:52.891828+00:00",
+  "timestamp": "2026-06-14T02:13:47.357237+00:00",
   "repo": "yaroslavros/bgp-masque-tunnel",
   "labels": [
     {
@@ -50,5 +50,71 @@
     }
   ],
   "issues": [],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 1,
+      "id": "PR_kwDOSkVUEM7l3fV2",
+      "title": "Initial review",
+      "url": "https://github.com/yaroslavros/bgp-masque-tunnel/pull/1",
+      "state": "OPEN",
+      "author": "aretana",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I took an initial look at the draft and made some changes:\r\n\r\n- instead of indicating which sub-TLVs are not applicable, I changed the logic to list the ones that are (this should be easier to maintain)\r\n- added some minor things to be compliant with what idr expects (https://wiki.ietf.org/group/idr/TEA-templates)\r\n- added some validation text\r\n\r\nI think we could publish this initial version, but I do want to go back for a deeper look into some things:\r\n\r\n- look in detail at the allowed Sub-TLVs\r\n- I didn't look into the URI Template or ALPN sub-TLVs\r\n- The Operational and Security Considerations look good, but I want to think about them a little more\r\n\r\nQuestion: how big can an URI template be?\r\n\r\n",
+      "createdAt": "2026-06-12T17:50:21Z",
+      "updatedAt": "2026-06-12T17:50:50Z",
+      "baseRepository": "yaroslavros/bgp-masque-tunnel",
+      "baseRefName": "main",
+      "baseRefOid": "8650cca3c3c4f4717e80dfc30dbd8aa5f79c359a",
+      "headRepository": "yaroslavros/bgp-masque-tunnel",
+      "headRefName": "alvaro",
+      "headRefOid": "da70a1ddbd9e7540129a2224390dad060bf20f35",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABC4ESBQ",
+          "commit": {
+            "abbreviatedOid": "da70a1d"
+          },
+          "author": "github-actions",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-12T17:50:50Z",
+          "updatedAt": "2026-06-12T17:50:50Z",
+          "comments": [
+            {
+              "originalPosition": 187,
+              "body": "````suggestion\nA BGP Tunnel Encapsulation Attribute MAY contain both MASQUE Tunnel Encapsulation\nTLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or\nsubsequent specifications. This document does not define any preference between\nMASQUE and non-MASQUE tunnel types. Selection among available tunnel types is\ndetermined by local policy and the procedures applicable to the associated\n````",
+              "createdAt": "2026-06-12T17:50:50Z",
+              "updatedAt": "2026-06-12T17:50:50Z"
+            },
+            {
+              "originalPosition": 124,
+              "body": "````suggestion\nThe Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE\nTunnel Encapsulation TLVs because the authority component of the URI Template\nidentifies the MASQUE proxy endpoint and provides the information necessary\n````",
+              "createdAt": "2026-06-12T17:50:50Z",
+              "updatedAt": "2026-06-12T17:50:50Z"
+            },
+            {
+              "originalPosition": 54,
+              "body": "````suggestion\nURI Template Sub-TLV, or contains more than one URI Template Sub-TLV,\n````",
+              "createdAt": "2026-06-12T17:50:50Z",
+              "updatedAt": "2026-06-12T17:50:50Z"
+            },
+            {
+              "originalPosition": 50,
+              "body": "````suggestion\nAll other Sub-TLVs not explicitly listed above are not defined for use with\nMASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when\nvalidating MASQUE-specific semantics. Future specifications MAY define\n````",
+              "createdAt": "2026-06-12T17:50:50Z",
+              "updatedAt": "2026-06-12T17:50:50Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
