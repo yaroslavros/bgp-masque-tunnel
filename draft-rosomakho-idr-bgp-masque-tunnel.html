@@ -6,6 +6,7 @@
 <meta content="initial-scale=1.0" name="viewport">
 <title>BGP Signaling of MASQUE Tunnel Encapsulation</title>
 <meta content="Yaroslav Rosomakho" name="author">
+<meta content="Alvaro Retana" name="author">
 <meta content="
        This document defines BGP Tunnel Encapsulation Attribute tunnel types for
 MASQUE CONNECT-TCP, CONNECT-UDP, CONNECT-IP, and CONNECT-ETHERNET. It also
@@ -13,24 +14,25 @@ defines URI Template and ALPN Sub-TLVs for advertising the MASQUE proxy endpoint
 the HTTP request target template, and the application-layer protocol constraints
 used to establish the corresponding MASQUE tunnel. 
     " name="description">
-<meta content="xml2rfc 3.33.0" name="generator">
+<meta content="xml2rfc 3.34.0" name="generator">
 <meta content="bgp" name="keyword">
 <meta content="masque" name="keyword">
 <meta content="tunnel" name="keyword">
 <meta content="draft-rosomakho-idr-bgp-masque-tunnel-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.33.0
-    Python 3.12.13
-    ConfigArgParse 1.7
+  xml2rfc 3.34.0
+    Python 3.14.5
+    ConfigArgParse 1.7.5
     google-i18n-address 3.1.1
     intervaltree 3.2.1
     Jinja2 3.1.6
-    lxml 6.0.2
-    platformdirs 4.9.6
+    lxml 6.1.1
+    natsort 8.4.0
+    platformdirs 4.10.0
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.7.0
+    wcwidth 0.8.1
 -->
 <link href="draft-rosomakho-idr-bgp-masque-tunnel.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -297,16 +299,19 @@ h1, h2, h3, h4, h5, h6 {
   font-size-adjust: 0.5;
   color: var(--title-color);
 }
-h1#title {
-  font-size: 32px;
-  line-height: 40px;
-  clear: both;
-}
-h1#title, h1#rfcnum {
-  margin: 1.5em 0 0.2em;
-}
-h1#rfcnum + h1#title {
-  margin: 0.2em 0;
+h1 {
+  &#title {
+    font-size: 32px;
+    line-height: 40px;
+    clear: both;
+    margin: 1.5em 0 0.2em;
+  }
+  &#rfcnum {
+    margin: 1.5em 0 0.2em;
+    & + h1#title {
+      margin: 0.2em 0;
+    }
+  }
 }
 
 h1, h2, h3 {
@@ -326,10 +331,10 @@ h4, h5, h6 {
 #abstract+p {
   font-size: 18px;
   line-height: 24px;
-}
-#abstract+p code, #abstract+p samp, #abstract+p tt {
-  font-size: 16px;
-  line-height: 0;
+  & code, & samp, & tt {
+    font-size: 16px;
+    line-height: 0;
+  }
 }
 
 p {
@@ -340,59 +345,59 @@ p {
 div {
   margin: 0;
 }
-.alignRight.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignRight.art-text pre {
-  padding: 0;
-  width: auto;
-}
 .alignRight {
   margin: 1em 0;
-}
-.alignRight > *:first-child {
-  border: none;
-  margin: 0;
-  float: right;
-  clear: both;
-}
-.alignRight > *:nth-child(2) {
-  clear: both;
-  display: block;
-  border: none;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    margin: 0;
+    float: right;
+    clear: both;
+  }
+  & > *:nth-child(2) {
+    clear: both;
+    display: block;
+    border: none;
+  }
 }
 svg {
   display: block;
-}
-/* font-family isn't space-separated, but =~ will have to do */
-svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
-  font-family: var(--font-mono);
-}
-.alignCenter.art-text {
-  background-color: var(--highlight-color);
-  border: 1px solid var(--line-color);
-  border-radius: 3px;
-  padding: 0.5em 1em 0;
-  margin-bottom: 0.5em;
-}
-.alignCenter.art-text pre {
-  padding: 0;
-  width: auto;
+  /* font-family isn't space-separated, but =~ will have to do */
+  &[font-family~="monospace" i], & [font-family~="monospace" i] {
+    font-family: var(--font-mono);
+  }
 }
 .alignCenter {
   margin: 1em 0;
-}
-.alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
-  display: table;
-  margin: 0 auto;
+  &.art-text {
+    background-color: var(--highlight-color);
+    border: 1px solid var(--line-color);
+    border-radius: 3px;
+    padding: 0.5em 1em 0;
+    margin-bottom: 0.5em;
+    & pre {
+      padding: 0;
+      width: auto;
+    }
+  }
+  & > *:first-child {
+    border: none;
+    /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+       support flexbox yet.
+    */
+    display: table;
+    margin: 0 auto;
+  }
 }
 
 /* lists */
@@ -430,26 +435,25 @@ dl {
     --indent: 5ch;
     & > dt {
       min-width: calc(var(--indent) - 2ch);
+      float: none;
     }
-  }
-  &.olPercent > dt {
-    float: none;
   }
 
   dl > dd > & {
     margin-top: 0.5em;
     margin-bottom: 0;
   }
-}
-dl:not(.dlNewline) > dt {
-  float: left;
-  margin-right: 2ch;
-  min-width: 8ch;
-}
-dl > dd {
-  margin-bottom: .8em;
-  margin-left: var(--indent) !important; /* stupid element overrides */
-  min-height: 2ex;
+
+  &:not(.dlNewline) > dt {
+    float: left;
+    margin-right: 2ch;
+    min-width: 8ch;
+  }
+  & > dd {
+    margin-bottom: .8em;
+    margin-left: var(--indent) !important; /* stupid element overrides */
+    min-height: 2ex;
+  }
 }
 :is(dl.compact, .dlCompact) > dd {
   margin-bottom: 0;
@@ -465,20 +469,22 @@ dl > dd {
 }
 
 /* links */
-a, a[href].selfRef:hover {
+a {
   text-decoration: none;
+  &[href] {
+    color: var(--link-color);
+    &:hover { text-decoration: underline; }
+    &.selfRef {
+      color: var(--text-color);
+      &:hover {
+        text-decoration: none;
+        background-color: var(--highlight-color);
+      }
+    }
+  }
 }
-a[href] {
-  color: var(--link-color);
-}
-a[href].selfRef, .iref + a[href].internal {
+.iref + a[href].internal {
   color: var(--text-color);
-}
-a[href]:hover {
-  text-decoration: underline;
-}
-a[href].selfRef:hover {
-  background-color: var(--highlight-color);
 }
 a.xref:is(.cite, .auto), :is(#status-of-memo, #copyright) a {
   white-space: nowrap;
@@ -514,9 +520,9 @@ img {
 figure {
   margin: 0.5em 0;
   padding: 0;
-}
-figure blockquote {
-  margin: 0.8em 0.4em 0.4em;
+  & blockquote {
+    margin: 0.8em 0.4em 0.4em;
+  }
 }
 figcaption, caption {
   font-style: italic;
@@ -526,17 +532,19 @@ figcaption, caption {
 }
 @media screen {
   /* Auto-collapse boilerplate. */
-  :is(#status-of-memo, #copyright) p {
-    margin: -2px 0;
-    max-height: 0;
-    transition: max-height 2s ease, margin 0.5s ease 0.5s;
-    overflow: hidden;
-  }
-  :is(#status-of-memo, #copyright):hover p,
-  :is(#status-of-memo, #copyright) h2:target ~ p {
-    margin: 0.5em 0;
-    max-height: 500px;
-    overflow: auto;
+  :is(#status-of-memo, #copyright) {
+    & p {
+      margin: -2px 0;
+      max-height: 0;
+      transition: max-height 2s ease, margin 0.5s ease 0.5s;
+      overflow: hidden;
+    }
+    &:hover p,
+    & h2:target ~ p {
+      margin: 0.5em 0;
+      max-height: 500px;
+      overflow: auto;
+    }
   }
   pre, svg {
     display: inline-block;
@@ -586,25 +594,17 @@ table {
   max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
-}
-table.right {
-  margin-left: auto;
-}
-table.center {
-  margin-left: auto;
-  margin-right: auto;
-}
-table.left {
-  margin-right: auto;
-}
-table .text-left {
-  text-align: left;
-}
-table .text-center {
-  text-align: center;
-}
-table .text-right {
-  text-align: right;
+  &.right { margin-left: auto; }
+  &.center { margin-left: auto; margin-right: auto; }
+  &.left { margin-right: auto; }
+  & .text-left { text-align: left; }
+  & .text-center { text-align: center; }
+  & .text-right { text-align: right; }
+  & caption {
+    margin: 0;
+    padding: 3px 0 3px 1em;
+  }
+  & p { margin: 0; }
 }
 
 thead, tbody {
@@ -624,13 +624,6 @@ th {
 :is(tr:nth-child(2n+1), thead+tbody > tr:nth-child(2n)) > td {
   background-color: var(--highlight-color);
 }
-table caption {
-  margin: 0;
-  padding: 3px 0 3px 1em;
-}
-table p {
-  margin: 0;
-}
 
 /* pilcrow */
 a.pilcrow {
@@ -641,18 +634,16 @@ a.pilcrow {
     color: var(--pilcrow-weak);
     &:hover { text-decoration: none; }
   }
-}
-@media not print {
-  :hover > a.pilcrow, a.pilcrow:focus {
-    opacity: 1;
+  @media not print {
+    :hover > &, &:focus {
+      opacity: 1;
+    }
+    &[href]:hover {
+      color: var(--pilcrow-strong);
+      background-color: transparent;
+    }
   }
-  a.pilcrow[href]:hover {
-    color: var(--pilcrow-strong);
-    background-color: transparent;
-  }
-}
-@media print {
-  a.pilcrow {
+  @media print {
     display: none;
   }
 }
@@ -711,9 +702,9 @@ sub, sup {
   font-size: 0.9em;
   font-style: italic;
   margin-top: 2em;
-}
-.docInfo .prepared {
-  float: right;
+  & .prepared {
+    float: right;
+  }
 }
 
 /* table of contents */
@@ -803,23 +794,27 @@ hr.addr {
   max-width: calc(100% - 16px);
 }
 @media (min-width: 500px) {
-  #authors-addresses > section {
-    column-count: 2;
-    column-gap: 20px;
-  }
-  #authors-addresses > section > h2 {
-    column-span: all;
-  }
-  /* hack for break-inside: avoid-column */
-  #authors-addresses address {
-    display: inline-block;
-    break-inside: avoid-column;
+  #authors-addresses {
+    & > section {
+      column-count: 2;
+      column-gap: 20px;
+    }
+    & > section > h2 {
+      column-span: all;
+    }
+    /* hack for break-inside: avoid-column */
+    & address {
+      display: inline-block;
+      break-inside: avoid-column;
+    }
   }
 }
 
 /* Comments */
-.rfcEditorRemove p:first-of-type {
-  font-style: italic;
+.rfcEditorRemove {
+  & p:first-of-type {
+    font-style: italic;
+  }
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -830,19 +825,21 @@ hr.addr {
 }
 
 @media screen {
-  #toc nav {
-    font-family: var(--font-title);
-    font-weight: 360;
-    & > ul { margin-bottom: 2em; }
-    & ul {
-      margin: 0 0 0 4px;
-      & :is(p, li) {
-        margin: 2px 0;
+  #toc {
+    & nav {
+      font-family: var(--font-title);
+      font-weight: 360;
+      & > ul { margin-bottom: 2em; }
+      & ul {
+        margin: 0 0 0 4px;
+        & :is(p, li) {
+          margin: 2px 0;
+        }
       }
     }
-  }
-  #toc a.toplink {
-    float: right;
+    & a.toplink {
+      float: right;
+    }
   }
 }
 @media not screen {
@@ -863,54 +860,54 @@ hr.addr {
     margin: 0;
     border-bottom: 1px solid #ccc;
     opacity: 0.6;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 2px 0 2px 6px;
-    padding-right: 1em;
-    font-size: 18px;
-    line-height: 24px;
-    min-width: 190px;
-    text-align: right;
-    background-color: #444;
-    color: white;
-    cursor: pointer;
-    &::before { /* css hamburger */
-      float: right;
-      position: relative;
-      width: 1em;
-      height: 1px;
-      left: -164px;
-      margin: 8px 0 0 0;
-      background: white none repeat scroll 0 0;
-      box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
-      content: "";
+    & h2 {
+      margin: 0;
+      padding: 2px 0 2px 6px;
+      padding-right: 1em;
+      font-size: 18px;
+      line-height: 24px;
+      min-width: 190px;
+      text-align: right;
+      background-color: #444;
+      color: white;
+      cursor: pointer;
+      &::before { /* css hamburger */
+        float: right;
+        position: relative;
+        width: 1em;
+        height: 1px;
+        left: -164px;
+        margin: 8px 0 0 0;
+        background: white none repeat scroll 0 0;
+        box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+        content: "";
+      }
     }
-  }
-  #toc nav {
-    display: none;
-    background-color: var(--background-color);
-    padding: 0.5em 1em 1em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    height: calc(100vh - 48px);
-    border-left: 1px solid #ddd;
-  }
-  #toc.active {
-    opacity: 1;
-    & nav { display: block; }
-  }
-  /* Make the collapsed ToC header render white on gray also when it's a link */
-  #toc h2 a,
-  #toc h2 a:is(:link, :focus, :hover),
-  #toc a.toplink,
-  #toc a.toplink:hover {
-    color: white;
-    background-color: #444;
-    text-decoration: none;
-  }
-  #toc a.toplink {
-    margin: 2px 0.5em 0;
+    & nav {
+      display: none;
+      background-color: var(--background-color);
+      padding: 0.5em 1em 1em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      height: calc(100vh - 48px);
+      border-left: 1px solid #ddd;
+    }
+    &.active {
+      opacity: 1;
+      & nav { display: block; }
+    }
+    /* Make the collapsed ToC header render white on gray also when it's a link */
+    & h2 a,
+    & h2 a:is(:link, :focus, :hover),
+    & a.toplink,
+    & a.toplink:hover {
+      color: white;
+      background-color: #444;
+      text-decoration: none;
+    }
+    & a.toplink {
+      margin: 2px 0.5em 0;
+    }
   }
 }
 
@@ -929,26 +926,26 @@ hr.addr {
     margin: 0;
     padding: 0;
     z-index: 1;
-  }
-  #toc h2 {
-    margin: 0;
-    padding: 0.25em 1em 1em 0;
-  }
-  #toc nav {
-    display: block;
-    height: calc(90vh - 84px);
-    bottom: 0;
-    padding: 0.5em 0 2em;
-    overflow: auto;
-    overscroll-behavior: contain;
-    scrollbar-width: thin;
+    & h2 {
+      margin: 0;
+      padding: 0.25em 1em 1em 0;
+    }
+    & nav {
+      display: block;
+      height: calc(90vh - 84px);
+      bottom: 0;
+      padding: 0.5em 0 2em;
+      overflow: auto;
+      overscroll-behavior: contain;
+      scrollbar-width: thin;
+    }
+    & a.toplink {
+      margin: 8px 0.5em 0;
+    }
   }
   img { /* future proofing */
     max-width: 100%;
     height: auto;
-  }
-  #toc a.toplink {
-    margin: 8px 0.5em 0;
   }
 }
 
@@ -964,12 +961,13 @@ hr.addr {
   #n-copyright-notice {
     border-bottom: none;
   }
-  #toc, #n-introduction {
-    page-break-before: always;
-  }
   #toc {
+    page-break-before: always;
     border-top: none;
     padding-top: 0;
+  }
+  #n-introduction {
+    page-break-before: always;
   }
   figure, pre, .vcard {
     page-break-inside: avoid;
@@ -1031,17 +1029,19 @@ hr.addr {
 }
 
 /* SVG Trick: a prefix match works because only black and white are allowed */
-svg :is([stroke="black"], [stroke^="#000"]) {
-  stroke: var(--text-color);
-}
-svg :is([stroke="white"], [stroke^="#fff"]) {
-  stroke: var(--background-color);
-}
-svg :is([fill="black"], [fill^="#000"], :not([fill])) {
-  fill: var(--text-color);
-}
-svg :is([fill="white"], [fill^="#fff"]) {
-  fill: var(--background-color);
+svg {
+  & :is([stroke="black"], [stroke^="#000"]) {
+    stroke: var(--text-color);
+  }
+  & :is([stroke="white"], [stroke^="#fff"]) {
+    stroke: var(--background-color);
+  }
+  & :is([fill="black"], [fill^="#000"], :not([fill])) {
+    fill: var(--text-color);
+  }
+  & :is([fill="white"], [fill^="#fff"]) {
+    fill: var(--background-color);
+  }
 }
 </style>
 
@@ -1051,11 +1051,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">BGP MASQUE Tunnel Encapsulation</td>
-<td class="right">May 2026</td>
+<td class="right">June 2026</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Rosomakho</td>
-<td class="center">Expires 22 November 2026</td>
+<td class="left">Rosomakho &amp; Retana</td>
+<td class="center">Expires 20 December 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1068,17 +1068,21 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-rosomakho-idr-bgp-masque-tunnel-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-05-21" class="published">21 May 2026</time>
+<time datetime="2026-06-18" class="published">18 June 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-11-22">22 November 2026</time></dd>
-<dt class="label-authors">Author:</dt>
+<dd class="expires"><time datetime="2026-12-20">20 December 2026</time></dd>
+<dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">Y. Rosomakho</div>
 <div class="org">Zscaler</div>
+</div>
+<div class="author">
+      <div class="author-name">A. Retana</div>
+<div class="org">Futurewei Technologies, Inc.</div>
 </div>
 </dd>
 </dl>
@@ -1127,7 +1131,7 @@ used to establish the corresponding MASQUE tunnel.<a href="#section-abstract-1" 
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 22 November 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 20 December 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1220,7 +1224,7 @@ used to establish the corresponding MASQUE tunnel.<a href="#section-abstract-1" 
             <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1329,9 +1333,8 @@ reachability information to which the MASQUE tunnel applies.<a href="#section-3-
 defined in this document is referred to as a MASQUE Tunnel Encapsulation TLV.
 A MASQUE Tunnel Encapsulation TLV <span class="bcp14">MUST</span> contain exactly one URI Template Sub-TLV
 and <span class="bcp14">MAY</span> contain at most one ALPN Sub-TLV.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">The following Sub-TLVs are not applicable to MASQUE Tunnel Encapsulation TLVs
-and <span class="bcp14">MUST NOT</span> be included:<a href="#section-3-5" class="pilcrow">¶</a></p>
-<span id="name-sub-tlvs-not-defined-for-us"></span><div id="masque-prohibited-sub-tlvs">
+<p id="section-3-5">Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:<a href="#section-3-5" class="pilcrow">¶</a></p>
+<span id="name-sub-tlvs-not-defined-for-us"></span><div id="masque-allowed-sub-tlvs">
 <table class="center" id="table-1">
         <caption>
 <a href="#table-1" class="selfRef">Table 1</a>:
@@ -1345,67 +1348,35 @@ and <span class="bcp14">MUST NOT</span> be included:<a href="#section-3-5" class
         </thead>
         <tbody>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Encapsulation</td>
-            <td class="text-left" rowspan="1" colspan="1">1</td>
+            <td class="text-left" rowspan="1" colspan="1">Color</td>
+            <td class="text-left" rowspan="1" colspan="1">4</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Protocol Type</td>
-            <td class="text-left" rowspan="1" colspan="1">2</td>
+            <td class="text-left" rowspan="1" colspan="1">Load-Balancing Block</td>
+            <td class="text-left" rowspan="1" colspan="1">5</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">IPsec Tunnel Authenticator</td>
-            <td class="text-left" rowspan="1" colspan="1">3</td>
+            <td class="text-left" rowspan="1" colspan="1">DS Field</td>
+            <td class="text-left" rowspan="1" colspan="1">7</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">Tunnel Egress Endpoint</td>
-            <td class="text-left" rowspan="1" colspan="1">6</td>
+            <td class="text-left" rowspan="1" colspan="1">URI Template</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD5</td>
           </tr>
           <tr>
-            <td class="text-left" rowspan="1" colspan="1">UDP Destination Port</td>
-            <td class="text-left" rowspan="1" colspan="1">8</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">Embedded Label Handling</td>
-            <td class="text-left" rowspan="1" colspan="1">9</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">MPLS Label Stack</td>
-            <td class="text-left" rowspan="1" colspan="1">10</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">Prefix-SID</td>
-            <td class="text-left" rowspan="1" colspan="1">11</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">Preference</td>
-            <td class="text-left" rowspan="1" colspan="1">12</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">Binding SID</td>
-            <td class="text-left" rowspan="1" colspan="1">13</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">ENLP</td>
-            <td class="text-left" rowspan="1" colspan="1">14</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">Priority</td>
-            <td class="text-left" rowspan="1" colspan="1">15</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">SPI/SI Representation</td>
-            <td class="text-left" rowspan="1" colspan="1">16</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">SRv6 Binding SID</td>
-            <td class="text-left" rowspan="1" colspan="1">20</td>
+            <td class="text-left" rowspan="1" colspan="1">ALPN</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD6</td>
           </tr>
         </tbody>
       </table>
 </div>
-<p id="section-3-7">If a MASQUE Tunnel Encapsulation TLV contains a prohibited Sub-TLV, contains no
-URI Template Sub-TLV, or contains more than one URI Template Sub-TLV, the MASQUE
-Tunnel Encapsulation TLV <span class="bcp14">MUST</span> be ignored.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-7">All other Sub-TLVs not explicitly listed above are not defined for use with
+MASQUE Tunnel Encapsulation TLVs. Receivers <span class="bcp14">MUST</span> ignore these Sub-TLVs when
+validating MASQUE-specific semantics. Future specifications <span class="bcp14">MAY</span> define
+additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.<a href="#section-3-7" class="pilcrow">¶</a></p>
+<p id="section-3-8">If a MASQUE Tunnel Encapsulation TLV contains no
+URI Template Sub-TLV, or contains more than one URI Template Sub-TLV,
+it <span class="bcp14">MUST</span> be ignored.<a href="#section-3-8" class="pilcrow">¶</a></p>
 <div id="connect-tcp-tunnel-type">
 <section id="section-3.1">
         <h3 id="name-connect-tcp-tunnel-type">
@@ -1415,6 +1386,8 @@ Tunnel Encapsulation TLV <span class="bcp14">MUST</span> be ignored.<a href="#se
 to be carried using CONNECT-TCP <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span>. This tunnel type is applicable
 to routes or service-specific information that identify TCP connectivity or TCP
 flow steering.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-2">Name: MASQUE CONNECT-TCP Tunnel
+   Type: TBD1<a href="#section-3.1-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="connect-udp-tunnel-type">
@@ -1426,6 +1399,8 @@ flow steering.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 to be carried using CONNECT-UDP <span>[<a href="#CONNECT-UDP" class="cite xref">CONNECT-UDP</a>]</span>. This tunnel type is applicable
 to routes or service-specific information that identify UDP connectivity or UDP
 flow steering.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">Name: MASQUE CONNECT-UDP Tunnel
+   Type: TBD2<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="connect-ip-tunnel-type">
@@ -1437,6 +1412,8 @@ flow steering.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 to be carried using CONNECT-IP <span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span>. This tunnel type is applicable to
 routes that identify IP reachability, such as IP prefixes, VPN-IP routes, or
 other service-specific IP reachability information.<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.3-2">Name: MASQUE CONNECT-IP Tunnel
+   Type: TBD3<a href="#section-3.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="connect-ethernet-tunnel-type">
@@ -1449,6 +1426,8 @@ route is to be carried using CONNECT-ETHERNET <span>[<a href="#CONNECT-ETHERNET"
 type is applicable to routes that identify Ethernet or Layer 2 service
 reachability, such as EVPN or other service-specific Layer 2 reachability
 information.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">Name: MASQUE CONNECT-ETHERNET Tunnel
+   Type: TBD4<a href="#section-3.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1469,7 +1448,7 @@ URI Template Sub-TLV is carried in a MASQUE Tunnel Encapsulation TLV.<a href="#s
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |   Type=TBD    |           Length              |               |
+ |   Type=TBD5   |           Length              |               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
  ~                     URI Template Value                        ~
  |                                                               |
@@ -1483,7 +1462,7 @@ URI Template Sub-TLV is carried in a MASQUE Tunnel Encapsulation TLV.<a href="#s
 <span class="break"></span><dl class="dlParallel" id="section-4-4">
         <dt id="section-4-4.1">Type:</dt>
         <dd style="margin-left: 1.5em" id="section-4-4.2">
-          <p id="section-4-4.2.1">TBD, to be assigned by IANA from the range 128-255.<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
+          <p id="section-4-4.2.1">TBD5<a href="#section-4-4.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-4-4.3">Length:</dt>
@@ -1511,6 +1490,10 @@ not in absolute form, if it does not include non-empty scheme, authority, and
 path components, or if it is otherwise not usable with the MASQUE mechanism
 identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
 Encapsulation TLV <span class="bcp14">MUST</span> be ignored.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">The Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE
+Tunnel Encapsulation TLVs because the authority component of the URI Template
+identifies the MASQUE proxy endpoint and provides the information necessary
+to establish the corresponding HTTP connection.<a href="#section-4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="alpn-sub-tlv">
@@ -1531,7 +1514,7 @@ the corresponding MASQUE tunnel.<a href="#section-5-1" class="pilcrow">¶</a></p
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |   Type=TBD    |           Length              |               |
+ |   Type=TBD6   |           Length              |               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
  ~                       ALPN ProtocolNameList                   ~
  |                                                               |
@@ -1545,7 +1528,7 @@ the corresponding MASQUE tunnel.<a href="#section-5-1" class="pilcrow">¶</a></p
 <span class="break"></span><dl class="dlParallel" id="section-5-4">
         <dt id="section-5-4.1">Type:</dt>
         <dd style="margin-left: 1.5em" id="section-5-4.2">
-          <p id="section-5-4.2.1">TBD, to be assigned by IANA from the range 128-255.<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
+          <p id="section-5-4.2.1">TBD6<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
 <dt id="section-5-4.3">Length:</dt>
@@ -1592,27 +1575,17 @@ used to carry that traffic.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-6-4.1">
           <p id="section-6-4.1.1">A route that identifies IP reachability, such as an IP prefix or VPN-IP route,
-can use the CONNECT-IP Tunnel Type to indicate that matching IP packets are
-carried using CONNECT-IP.<a href="#section-6-4.1.1" class="pilcrow">¶</a></p>
+can use the CONNECT-IP, CONNECT-TCP, or CONNECT-UDP Tunnel Types to indicate that matching IP, TCP, or UDP traffic packets are
+carried using the correspondind CONNECT mechanism.<a href="#section-6-4.1.1" class="pilcrow">¶</a></p>
 </li>
         <li class="normal" id="section-6-4.2">
           <p id="section-6-4.2.1">A route that identifies Ethernet or Layer 2 service reachability, such as an
 EVPN route, can use the CONNECT-ETHERNET Tunnel Type to indicate that matching
 Ethernet frames are carried using CONNECT-ETHERNET.<a href="#section-6-4.2.1" class="pilcrow">¶</a></p>
 </li>
-        <li class="normal" id="section-6-4.3">
-          <p id="section-6-4.3.1">A route or service-specific advertisement that identifies TCP connectivity or
-TCP flow steering can use the CONNECT-TCP Tunnel Type to indicate that matching
-TCP traffic is carried using CONNECT-TCP.<a href="#section-6-4.3.1" class="pilcrow">¶</a></p>
-</li>
-        <li class="normal" id="section-6-4.4">
-          <p id="section-6-4.4.1">A route or service-specific advertisement that identifies UDP connectivity or
-UDP flow steering can use the CONNECT-UDP Tunnel Type to indicate that matching
-UDP traffic is carried using CONNECT-UDP.<a href="#section-6-4.4.1" class="pilcrow">¶</a></p>
-</li>
       </ul>
 <p id="section-6-5">Specifications or deployment profiles that use the tunnel types defined in this
-document <span class="bcp14">MAY</span> define additional rules for their use with particular AFI/SAFI
+document may define additional rules for their use with particular AFI/SAFI
 combinations or service models.<a href="#section-6-5" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -1632,14 +1605,19 @@ intended administrative scope.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">Multiple MASQUE tunnel candidates can be advertised by including multiple Tunnel
 Encapsulation TLVs, each containing a single URI Template Sub-TLV. This can be
 used to advertise alternative MASQUE proxies. Selection among available tunnel
-candidates follows the procedures and local policy used for the BGP Tunnel
-Encapsulation Attribute.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">Operators <span class="bcp14">SHOULD</span> consider the size and stability of URI Template values when
+candidates is left to local policy and outside the scope of this specification.<a href="#section-7-3" class="pilcrow">¶</a></p>
+<p id="section-7-4">A BGP Tunnel Encapsulation Attribute <span class="bcp14">MAY</span> contain both MASQUE Tunnel Encapsulation
+TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or
+subsequent specifications. This document does not define any preference between
+MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is
+determined by local policy and the procedures applicable to the associated
+AFI/SAFI.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-5">Operators <span class="bcp14">SHOULD</span> consider the size and stability of URI Template values when
 attaching MASQUE Tunnel Encapsulation TLVs to routes. Large URI Templates, or
 frequent changes to URI Templates, can increase BGP UPDATE size and route churn.
 Deployments that advertise the same MASQUE proxy parameters for many routes
 <span class="bcp14">SHOULD</span> consider existing BGP mechanisms and service-specific profiles that avoid
-unnecessary repetition.<a href="#section-7-4" class="pilcrow">¶</a></p>
+unnecessary repetition.<a href="#section-7-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -1647,40 +1625,40 @@ unnecessary repetition.<a href="#section-7-4" class="pilcrow">¶</a></p>
       <h2 id="name-security-considerations">
 <a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-8-1">This document defines BGP signaling for MASQUE tunnel encapsulation parameters.
+<p id="section-8-1">The security considerations of <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>, <span>[<a href="#CONNECT-UDP" class="cite xref">CONNECT-UDP</a>]</span>,
+<span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span>, <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span>, <span>[<a href="#CONNECT-ETHERNET" class="cite xref">CONNECT-ETHERNET</a>]</span>, <span>[<a href="#URI-TEMPLATE" class="cite xref">URI-TEMPLATE</a>]</span>, and
+<span>[<a href="#ALPN" class="cite xref">ALPN</a>]</span> apply.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-8-2">This document defines BGP signaling for MASQUE tunnel encapsulation parameters.
 It does not define a new authentication or authorization mechanism for MASQUE
 proxies, and it does not change the security properties of the MASQUE
-mechanisms identified by the tunnel types defined in this document.<a href="#section-8-1" class="pilcrow">¶</a></p>
-<p id="section-8-2">Authorization to use the MASQUE proxy, including authorization to reach the
+mechanisms identified by the tunnel types defined in this document.<a href="#section-8-2" class="pilcrow">¶</a></p>
+<p id="section-8-3">Authorization to use the MASQUE proxy, including authorization to reach the
 requested target or to carry the traffic associated with the route, is enforced
 by the MASQUE proxy and the applicable mechanisms. Implementations <span class="bcp14">MUST NOT</span>
 treat possession of a BGP route or Tunnel Encapsulation Attribute as sufficient
-authorization to use a MASQUE proxy.<a href="#section-8-2" class="pilcrow">¶</a></p>
-<p id="section-8-3">Misconfiguration, route leaks, or malicious injection of BGP routes carrying
+authorization to use a MASQUE proxy.<a href="#section-8-3" class="pilcrow">¶</a></p>
+<p id="section-8-4">Misconfiguration, route leaks, or malicious injection of BGP routes carrying
 MASQUE tunnel encapsulation information can cause traffic to be directed to an
 unintended MASQUE proxy. This can result in traffic interception, denial of
 service, policy bypass, or loss of connectivity. Operators should apply the same
 route filtering, origin validation, session protection, and import/export policy
-controls used for other BGP routes carrying tunnel encapsulation information.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">The URI Template Sub-TLV can reveal information about proxy hostnames, service
+controls used for other BGP routes carrying tunnel encapsulation information.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<p id="section-8-5">The URI Template Sub-TLV can reveal information about proxy hostnames, service
 structure, tenant identifiers, or internal topology. Such information can be
 sensitive. Operators should ensure that routes carrying MASQUE Tunnel
 Encapsulation TLVs are distributed only within the administrative scope where
-the corresponding MASQUE proxy information is intended to be visible.<a href="#section-8-4" class="pilcrow">¶</a></p>
-<p id="section-8-5">The URI Template carried in BGP is used to construct an HTTP request target.
+the corresponding MASQUE proxy information is intended to be visible.<a href="#section-8-5" class="pilcrow">¶</a></p>
+<p id="section-8-6">The URI Template carried in BGP is used to construct an HTTP request target.
 Implementations <span class="bcp14">MUST</span> validate the URI Template before use and <span class="bcp14">MUST</span> apply the
 processing rules in this document and in the applicable MASQUE specification.
 Implementations <span class="bcp14">MUST NOT</span> expand or use a URI Template in a way that creates a
 request target outside the scope intended by the received route and local
-policy.<a href="#section-8-5" class="pilcrow">¶</a></p>
-<p id="section-8-6">The ALPN Sub-TLV can constrain the application-layer protocols used to establish
+policy.<a href="#section-8-6" class="pilcrow">¶</a></p>
+<p id="section-8-7">The ALPN Sub-TLV can constrain the application-layer protocols used to establish
 a MASQUE tunnel. If an ALPN Sub-TLV is present, receivers <span class="bcp14">MUST</span> use only one of
 the advertised ALPN protocol identifiers for the corresponding tunnel. Ignoring
 an ALPN constraint could cause a receiver to use an HTTP version or transport
-that the advertising speaker did not intend to support for that tunnel.<a href="#section-8-6" class="pilcrow">¶</a></p>
-<p id="section-8-7">The security considerations of <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>, <span>[<a href="#CONNECT-UDP" class="cite xref">CONNECT-UDP</a>]</span>,
-<span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span>, <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span>, <span>[<a href="#CONNECT-ETHERNET" class="cite xref">CONNECT-ETHERNET</a>]</span>, <span>[<a href="#URI-TEMPLATE" class="cite xref">URI-TEMPLATE</a>]</span>, and
-<span>[<a href="#ALPN" class="cite xref">ALPN</a>]</span> apply.<a href="#section-8-7" class="pilcrow">¶</a></p>
+that the advertising speaker did not intend to support for that tunnel.<a href="#section-8-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1741,7 +1719,7 @@ Encapsulation Attribute Tunnel Types" registry:<a href="#section-9.1-1" class="p
         <h3 id="name-bgp-tunnel-encapsulation-att">
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-bgp-tunnel-encapsulation-att" class="section-name selfRef">BGP Tunnel Encapsulation Attribute Sub-TLVs</a>
         </h3>
-<p id="section-9.2-1">IANA is requested to allocate the following values from the "BGP Tunnel
+<p id="section-9.2-1">IANA is requested to allocate the following values from the 192-252 range in the "BGP Tunnel
 Encapsulation Attribute Sub-TLVs" registry:<a href="#section-9.2-1" class="pilcrow">¶</a></p>
 <span id="name-masque-bgp-tunnel-encapsulat"></span><div id="masque-tunnel-subtlvs">
 <table class="center" id="table-3">
@@ -1758,12 +1736,12 @@ Encapsulation Attribute Sub-TLVs" registry:<a href="#section-9.2-1" class="pilcr
           </thead>
           <tbody>
             <tr>
-              <td class="text-right" rowspan="1" colspan="1">TBD5, from the 128-255 range</td>
+              <td class="text-right" rowspan="1" colspan="1">TBD5</td>
               <td class="text-left" rowspan="1" colspan="1">URI Template</td>
               <td class="text-left" rowspan="1" colspan="1">this document</td>
             </tr>
             <tr>
-              <td class="text-right" rowspan="1" colspan="1">TBD6, from the 128-255 range</td>
+              <td class="text-right" rowspan="1" colspan="1">TBD6</td>
               <td class="text-left" rowspan="1" colspan="1">ALPN</td>
               <td class="text-left" rowspan="1" colspan="1">this document</td>
             </tr>
@@ -1857,8 +1835,8 @@ Encapsulation Attribute Sub-TLVs" registry:<a href="#section-9.2-1" class="pilcr
 </div>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-address">
-<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Yaroslav Rosomakho</span></div>
@@ -1866,6 +1844,14 @@ Encapsulation Attribute Sub-TLVs" registry:<a href="#section-9.2-1" class="pilcr
 <div class="email">
 <span>Email:</span>
 <a href="mailto:yrosomakho@zscaler.com" class="email">yrosomakho@zscaler.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Alvaro Retana</span></div>
+<div dir="auto" class="left"><span class="org">Futurewei Technologies, Inc.</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:aretana@futurewei.com" class="email">aretana@futurewei.com</a>
 </div>
 </address>
 </section>
