@@ -156,9 +156,9 @@ Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 | ALPN | TBD6 |
 {: #masque-allowed-sub-tlvs title="Sub-TLVs not defined for use with MASQUE Tunnel Encapsulation TLVs"}
 
-All other Sub-TLVs not explicitly listed above are not defined for use with 
-MASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when 
-validating MASQUE-specific semantics. Future specifications MAY define 
+All other Sub-TLVs not explicitly listed above are not defined for use with
+MASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when
+validating MASQUE-specific semantics. Future specifications MAY define
 additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.
 
 If a MASQUE Tunnel Encapsulation TLV contains no
