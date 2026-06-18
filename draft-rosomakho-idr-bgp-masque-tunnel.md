@@ -253,9 +253,9 @@ path components, or if it is otherwise not usable with the MASQUE mechanism
 identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
 Encapsulation TLV MUST be ignored.
 
-The Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE 
-Tunnel Encapsulation TLVs because the authority component of the URI Template 
-identifies the MASQUE proxy endpoint and provides the information necessary 
+The Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE
+Tunnel Encapsulation TLVs because the authority component of the URI Template
+identifies the MASQUE proxy endpoint and provides the information necessary
 to establish the corresponding HTTP connection.
 
 # ALPN Sub-TLV {#alpn-sub-tlv}
