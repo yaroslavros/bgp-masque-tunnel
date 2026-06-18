@@ -28,6 +28,11 @@ author:
     fullname: Yaroslav Rosomakho
     organization: Zscaler
     email: yrosomakho@zscaler.com
+ -
+    fullname: Alvaro Retana
+    organization: Futurewei Technologies, Inc.
+    email: aretana@futurewei.com
+
 
 normative:
 
@@ -140,30 +145,25 @@ defined in this document is referred to as a MASQUE Tunnel Encapsulation TLV.
 A MASQUE Tunnel Encapsulation TLV MUST contain exactly one URI Template Sub-TLV
 and MAY contain at most one ALPN Sub-TLV.
 
-The following Sub-TLVs are not applicable to MASQUE Tunnel Encapsulation TLVs
-and MUST NOT be included:
+Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 
 | Sub-TLV | Code |
 | --- | --- |
-| Encapsulation | 1 |
-| Protocol Type | 2 |
-| IPsec Tunnel Authenticator | 3 |
-| Tunnel Egress Endpoint | 6 |
-| UDP Destination Port | 8 |
-| Embedded Label Handling | 9 |
-| MPLS Label Stack | 10 |
-| Prefix-SID | 11 |
-| Preference | 12 |
-| Binding SID | 13 |
-| ENLP | 14 |
-| Priority | 15 |
-| SPI/SI Representation | 16 |
-| SRv6 Binding SID | 20 |
-{: #masque-prohibited-sub-tlvs title="Sub-TLVs not defined for use with MASQUE Tunnel Encapsulation TLVs"}
+| Color | 4 |
+| Load-Balancing Block | 5 |
+| DS Field | 7 |
+| URI Template | TBD5 |
+| ALPN | TBD6 |
+{: #masque-allowed-sub-tlvs title="Sub-TLVs not defined for use with MASQUE Tunnel Encapsulation TLVs"}
 
-If a MASQUE Tunnel Encapsulation TLV contains a prohibited Sub-TLV, contains no
-URI Template Sub-TLV, or contains more than one URI Template Sub-TLV, the MASQUE
-Tunnel Encapsulation TLV MUST be ignored.
+All other Sub-TLVs not explicitly listed above are not defined for use with
+MASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when
+validating MASQUE-specific semantics. Future specifications MAY define
+additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.
+
+If a MASQUE Tunnel Encapsulation TLV contains no
+URI Template Sub-TLV, or contains more than one URI Template Sub-TLV,
+it MUST be ignored.
 
 ## CONNECT-TCP Tunnel Type
 
@@ -172,12 +172,19 @@ to be carried using CONNECT-TCP {{CONNECT-TCP}}. This tunnel type is applicable
 to routes or service-specific information that identify TCP connectivity or TCP
 flow steering.
 
+   Name: MASQUE CONNECT-TCP Tunnel
+   Type: TBD1
+
 ## CONNECT-UDP Tunnel Type
 
 The CONNECT-UDP Tunnel Type indicates that traffic associated with the route is
 to be carried using CONNECT-UDP {{CONNECT-UDP}}. This tunnel type is applicable
 to routes or service-specific information that identify UDP connectivity or UDP
 flow steering.
+
+   Name: MASQUE CONNECT-UDP Tunnel
+   Type: TBD2
+
 
 ## CONNECT-IP Tunnel Type
 
@@ -186,6 +193,9 @@ to be carried using CONNECT-IP {{CONNECT-IP}}. This tunnel type is applicable to
 routes that identify IP reachability, such as IP prefixes, VPN-IP routes, or
 other service-specific IP reachability information.
 
+   Name: MASQUE CONNECT-IP Tunnel
+   Type: TBD3
+
 ## CONNECT-ETHERNET Tunnel Type
 
 The CONNECT-ETHERNET Tunnel Type indicates that traffic associated with the
@@ -193,6 +203,9 @@ route is to be carried using CONNECT-ETHERNET {{CONNECT-ETHERNET}}. This tunnel
 type is applicable to routes that identify Ethernet or Layer 2 service
 reachability, such as EVPN or other service-specific Layer 2 reachability
 information.
+
+   Name: MASQUE CONNECT-ETHERNET Tunnel
+   Type: TBD4
 
 # URI Template Sub-TLV {#uri-template-sub-tlv}
 
@@ -206,7 +219,7 @@ The URI Template Sub-TLV has the following format:
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |   Type=TBD    |           Length              |               |
+ |   Type=TBD5   |           Length              |               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
  ~                     URI Template Value                        ~
  |                                                               |
@@ -215,7 +228,7 @@ The URI Template Sub-TLV has the following format:
 {: #fig-uri-template-sub-tlv title="URI Template Sub-TLV"}
 
 Type:
-: TBD, to be assigned by IANA from the range 128-255.
+: TBD5
 
 Length:
 : The length, in octets, of the URI Template Value field.
@@ -240,6 +253,11 @@ path components, or if it is otherwise not usable with the MASQUE mechanism
 identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
 Encapsulation TLV MUST be ignored.
 
+The Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE
+Tunnel Encapsulation TLVs because the authority component of the URI Template
+identifies the MASQUE proxy endpoint and provides the information necessary
+to establish the corresponding HTTP connection.
+
 # ALPN Sub-TLV {#alpn-sub-tlv}
 
 The ALPN Sub-TLV indicates the application-layer protocol or protocols that are
@@ -254,7 +272,7 @@ The ALPN Sub-TLV has the following format:
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- |   Type=TBD    |           Length              |               |
+ |   Type=TBD6   |           Length              |               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
  ~                       ALPN ProtocolNameList                   ~
  |                                                               |
@@ -263,7 +281,7 @@ The ALPN Sub-TLV has the following format:
 {: #fig-alpn-sub-tlv title="ALPN Sub-TLV"}
 
 Type:
-: TBD, to be assigned by IANA from the range 128-255.
+: TBD6
 
 Length:
 : The length, in octets, of the ALPN ProtocolNameList field.
@@ -304,23 +322,15 @@ used to carry that traffic.
 The following examples illustrate possible uses:
 
 * A route that identifies IP reachability, such as an IP prefix or VPN-IP route,
-  can use the CONNECT-IP Tunnel Type to indicate that matching IP packets are
-  carried using CONNECT-IP.
+  can use the CONNECT-IP, CONNECT-TCP, or CONNECT-UDP Tunnel Types to indicate that matching IP, TCP, or UDP traffic packets are
+  carried using the correspondind CONNECT mechanism.
 
 * A route that identifies Ethernet or Layer 2 service reachability, such as an
   EVPN route, can use the CONNECT-ETHERNET Tunnel Type to indicate that matching
   Ethernet frames are carried using CONNECT-ETHERNET.
 
-* A route or service-specific advertisement that identifies TCP connectivity or
-  TCP flow steering can use the CONNECT-TCP Tunnel Type to indicate that matching
-  TCP traffic is carried using CONNECT-TCP.
-
-* A route or service-specific advertisement that identifies UDP connectivity or
-  UDP flow steering can use the CONNECT-UDP Tunnel Type to indicate that matching
-  UDP traffic is carried using CONNECT-UDP.
-
 Specifications or deployment profiles that use the tunnel types defined in this
-document MAY define additional rules for their use with particular AFI/SAFI
+document may define additional rules for their use with particular AFI/SAFI
 combinations or service models.
 
 # Operational Considerations
@@ -338,8 +348,14 @@ intended administrative scope.
 Multiple MASQUE tunnel candidates can be advertised by including multiple Tunnel
 Encapsulation TLVs, each containing a single URI Template Sub-TLV. This can be
 used to advertise alternative MASQUE proxies. Selection among available tunnel
-candidates follows the procedures and local policy used for the BGP Tunnel
-Encapsulation Attribute.
+candidates is left to local policy and outside the scope of this specification.
+
+A BGP Tunnel Encapsulation Attribute MAY contain both MASQUE Tunnel Encapsulation
+TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or
+subsequent specifications. This document does not define any preference between
+MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is
+determined by local policy and the procedures applicable to the associated
+AFI/SAFI.
 
 Operators SHOULD consider the size and stability of URI Template values when
 attaching MASQUE Tunnel Encapsulation TLVs to routes. Large URI Templates, or
@@ -349,6 +365,10 @@ SHOULD consider existing BGP mechanisms and service-specific profiles that avoid
 unnecessary repetition.
 
 # Security Considerations
+
+The security considerations of {{BGP-TUNNEL-ENCAP-ATTR}}, {{CONNECT-UDP}},
+{{CONNECT-IP}}, {{CONNECT-TCP}}, {{CONNECT-ETHERNET}}, {{URI-TEMPLATE}}, and
+{{ALPN}} apply.
 
 This document defines BGP signaling for MASQUE tunnel encapsulation parameters.
 It does not define a new authentication or authorization mechanism for MASQUE
@@ -387,10 +407,6 @@ the advertised ALPN protocol identifiers for the corresponding tunnel. Ignoring
 an ALPN constraint could cause a receiver to use an HTTP version or transport
 that the advertising speaker did not intend to support for that tunnel.
 
-The security considerations of {{BGP-TUNNEL-ENCAP-ATTR}}, {{CONNECT-UDP}},
-{{CONNECT-IP}}, {{CONNECT-TCP}}, {{CONNECT-ETHERNET}}, {{URI-TEMPLATE}}, and
-{{ALPN}} apply.
-
 # IANA Considerations
 
 IANA is requested to update the "BGP Tunnel Encapsulation" registry group as
@@ -411,13 +427,13 @@ Encapsulation Attribute Tunnel Types" registry:
 
 ## BGP Tunnel Encapsulation Attribute Sub-TLVs
 
-IANA is requested to allocate the following values from the "BGP Tunnel
+IANA is requested to allocate the following values from the 192-252 range in the "BGP Tunnel
 Encapsulation Attribute Sub-TLVs" registry:
 
 | Value | Description | Reference |
 |---:|---|---|
-| TBD5, from the 128-255 range | URI Template | this document |
-| TBD6, from the 128-255 range | ALPN | this document |
+| TBD5 | URI Template | this document |
+| TBD6 | ALPN | this document |
 {: #masque-tunnel-subtlvs title="MASQUE BGP Tunnel Encapsulation Attribute Sub-TLVs"}
 
 --- back
