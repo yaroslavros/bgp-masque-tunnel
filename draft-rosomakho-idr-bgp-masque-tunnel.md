@@ -162,7 +162,7 @@ validating MASQUE-specific semantics. Future specifications MAY define
 additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.
 
 If a MASQUE Tunnel Encapsulation TLV contains no
-URI Template Sub-TLV, or contains more than one URI Template Sub-TLV, 
+URI Template Sub-TLV, or contains more than one URI Template Sub-TLV,
 it MUST be ignored.
 
 ## CONNECT-TCP Tunnel Type
