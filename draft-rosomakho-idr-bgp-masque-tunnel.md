@@ -350,11 +350,11 @@ Encapsulation TLVs, each containing a single URI Template Sub-TLV. This can be
 used to advertise alternative MASQUE proxies. Selection among available tunnel
 candidates is left to local policy and outside the scope of this specification.
 
-A BGP Tunnel Encapsulation Attribute MAY contain both MASQUE Tunnel Encapsulation 
-TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or 
-subsequent specifications. This document does not define any preference between 
-MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is 
-determined by local policy and the procedures applicable to the associated 
+A BGP Tunnel Encapsulation Attribute MAY contain both MASQUE Tunnel Encapsulation
+TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or
+subsequent specifications. This document does not define any preference between
+MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is
+determined by local policy and the procedures applicable to the associated
 AFI/SAFI.
 
 Operators SHOULD consider the size and stability of URI Template values when
