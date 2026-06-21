@@ -364,6 +364,31 @@ Deployments that advertise the same MASQUE proxy parameters for many routes
 SHOULD consider existing BGP mechanisms and service-specific profiles that avoid
 unnecessary repetition.
 
+## URI Template Length
+
+{{URI-TEMPLATE}} does not define a general maximum length for a URI Template.
+When a URI Template is carried in the URI Template Sub-TLV, the length of the
+URI Template Value is constrained by the Sub-TLV encoding and by the size of the
+BGP UPDATE message in which the Sub-TLV is carried.
+
+The URI Template Sub-TLV uses a two-octet Length field. This allows the URI
+Template Value to be longer than 255 octets. However, long URI Template Values
+can significantly increase the size of the enclosing BGP UPDATE message and
+can affect propagation across BGP sessions where BGP Extended Messages
+{{?BGP-EXTENDED-MESSAGES=RFC8654}} are not used.
+
+URI Template Values SHOULD NOT exceed 1024 octets and should be kept as short as practical.
+
+Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended Messages
+{{BGP-EXTENDED-MESSAGES}} on the BGP sessions over which the
+corresponding routes are propagated. If BGP Extended Messages are not available, URI Template
+Values MUST be kept small enough that the complete BGP UPDATE message,
+including all path attributes, NLRI, and protocol overhead, does not exceed
+4096 octets.
+
+If the URI Template Value exceeds the receiver's supported or configured
+limit, the receiver SHOULD ignore the enclosing MASQUE Tunnel Encapsulation TLV.
+
 # Security Considerations
 
 The security considerations of {{BGP-TUNNEL-ENCAP-ATTR}}, {{CONNECT-UDP}},
