@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-18T02:15:15.067350+00:00",
+  "timestamp": "2026-06-21T02:16:08.272248+00:00",
   "repo": "yaroslavros/bgp-masque-tunnel",
   "labels": [
     {
@@ -49,32 +49,74 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 2,
+      "id": "I_kwDOSkVUEM8AAAABF6obvQ",
+      "title": "How big can an URI template be?",
+      "url": "https://github.com/yaroslavros/bgp-masque-tunnel/issues/2",
+      "state": "OPEN",
+      "author": "aretana",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "> Question: how big can an URI template be?\r\n\r\nI don't believe URI or URI templates specification define a ceiling.\r\nClearly, to reliably fit URI template into BGP UPDATE message it must be constrained to a reasonable length. How would you recommend defining it?\r\n\r\n_Originally posted by @yaroslavros in https://github.com/yaroslavros/bgp-masque-tunnel/issues/1#issuecomment-4740186341_\r\n            ",
+      "createdAt": "2026-06-18T11:40:45Z",
+      "updatedAt": "2026-06-18T11:43:37Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "body": "We need to check the bounds and add some text about the size of the BGP UPDATE message and the potential need to use extended messages.\n\nThis may be a good topic for Operational Considerations: if the template is too large, the tunnel won't be usable.",
+          "createdAt": "2026-06-18T11:43:37Z",
+          "updatedAt": "2026-06-18T11:43:37Z"
+        }
+      ]
+    }
+  ],
   "pulls": [
     {
       "number": 1,
       "id": "PR_kwDOSkVUEM7l3fV2",
       "title": "Initial review",
       "url": "https://github.com/yaroslavros/bgp-masque-tunnel/pull/1",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "aretana",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "I took an initial look at the draft and made some changes:\r\n\r\n- instead of indicating which sub-TLVs are not applicable, I changed the logic to list the ones that are (this should be easier to maintain)\r\n- added some minor things to be compliant with what idr expects (https://wiki.ietf.org/group/idr/TEA-templates)\r\n- added some validation text\r\n\r\nI think we could publish this initial version, but I do want to go back for a deeper look into some things:\r\n\r\n- look in detail at the allowed Sub-TLVs\r\n- I didn't look into the URI Template or ALPN sub-TLVs\r\n- The Operational and Security Considerations look good, but I want to think about them a little more\r\n\r\nQuestion: how big can an URI template be?\r\n\r\n",
       "createdAt": "2026-06-12T17:50:21Z",
-      "updatedAt": "2026-06-12T17:50:50Z",
+      "updatedAt": "2026-06-18T11:38:20Z",
       "baseRepository": "yaroslavros/bgp-masque-tunnel",
       "baseRefName": "main",
       "baseRefOid": "8650cca3c3c4f4717e80dfc30dbd8aa5f79c359a",
       "headRepository": "yaroslavros/bgp-masque-tunnel",
       "headRefName": "alvaro",
-      "headRefOid": "da70a1ddbd9e7540129a2224390dad060bf20f35",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "4b029f8d81e9f2d097f8562680e4f198bfaea072",
+      "closedAt": "2026-06-18T11:38:20Z",
+      "mergedAt": "2026-06-18T11:38:20Z",
+      "mergedBy": "aretana",
+      "mergeCommit": {
+        "oid": "ce1d4cc1cfd60b58b01a0b748ec2a1850c2b2b10"
+      },
+      "comments": [
+        {
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "body": "Looks good! Please accept suggestions from github-actions bot to remove trailing whitespace that breaks automation.",
+          "createdAt": "2026-06-18T09:05:58Z",
+          "updatedAt": "2026-06-18T09:05:58Z"
+        },
+        {
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "body": "> Question: how big can an URI template be?\r\n\r\nI don't believe URI or URI templates specification define a ceiling.\r\nClearly, to reliably fit URI template into BGP UPDATE message it must be constrained to a reasonable length. How would you recommend defining it?",
+          "createdAt": "2026-06-18T09:16:39Z",
+          "updatedAt": "2026-06-18T09:16:39Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOSkVUEM8AAAABC4ESBQ",
@@ -82,7 +124,7 @@
             "abbreviatedOid": "da70a1d"
           },
           "author": "github-actions",
-          "authorAssociation": "NONE",
+          "authorAssociation": "CONTRIBUTOR",
           "state": "COMMENTED",
           "body": "",
           "createdAt": "2026-06-12T17:50:50Z",
@@ -111,6 +153,45 @@
               "body": "````suggestion\nAll other Sub-TLVs not explicitly listed above are not defined for use with\nMASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when\nvalidating MASQUE-specific semantics. Future specifications MAY define\n````",
               "createdAt": "2026-06-12T17:50:50Z",
               "updatedAt": "2026-06-12T17:50:50Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDZ08CQ",
+          "commit": {
+            "abbreviatedOid": "da70a1d"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-18T09:06:08Z",
+          "updatedAt": "2026-06-18T09:06:08Z",
+          "comments": []
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDaxG8A",
+          "commit": {
+            "abbreviatedOid": "232a84c"
+          },
+          "author": "github-actions",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-18T11:17:28Z",
+          "updatedAt": "2026-06-18T11:17:29Z",
+          "comments": [
+            {
+              "originalPosition": 124,
+              "body": "````suggestion\nThe Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE\nTunnel Encapsulation TLVs because the authority component of the URI Template\nidentifies the MASQUE proxy endpoint and provides the information necessary\n````",
+              "createdAt": "2026-06-18T11:17:28Z",
+              "updatedAt": "2026-06-18T11:17:29Z"
+            },
+            {
+              "originalPosition": 54,
+              "body": "````suggestion\nURI Template Sub-TLV, or contains more than one URI Template Sub-TLV,\n````",
+              "createdAt": "2026-06-18T11:17:29Z",
+              "updatedAt": "2026-06-18T11:17:29Z"
             }
           ]
         }
