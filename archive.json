@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-21T02:16:08.272248+00:00",
+  "timestamp": "2026-06-23T01:58:01.348745+00:00",
   "repo": "yaroslavros/bgp-masque-tunnel",
   "labels": [
     {
@@ -192,6 +192,113 @@
               "body": "````suggestion\nURI Template Sub-TLV, or contains more than one URI Template Sub-TLV,\n````",
               "createdAt": "2026-06-18T11:17:29Z",
               "updatedAt": "2026-06-18T11:17:29Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "PR_kwDOSkVUEM7o7UHX",
+      "title": "Added URI Template Length operational considerations",
+      "url": "https://github.com/yaroslavros/bgp-masque-tunnel/pull/3",
+      "state": "OPEN",
+      "author": "yaroslavros",
+      "authorAssociation": "OWNER",
+      "assignees": [],
+      "labels": [],
+      "body": "To address https://github.com/yaroslavros/bgp-masque-tunnel/issues/2\r\n\r\nIn practice, URI templates are reasonably short and rarely exceed 100 octets.",
+      "createdAt": "2026-06-21T20:44:59Z",
+      "updatedAt": "2026-06-22T19:35:04Z",
+      "baseRepository": "yaroslavros/bgp-masque-tunnel",
+      "baseRefName": "main",
+      "baseRefOid": "ce1d4cc1cfd60b58b01a0b748ec2a1850c2b2b10",
+      "headRepository": "yaroslavros/bgp-masque-tunnel",
+      "headRefName": "uri-length",
+      "headRefOid": "80937271e9d8e8c876b1c967558d2f02b143b8b9",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDwzvdQ",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-22T19:27:09Z",
+          "updatedAt": "2026-06-22T19:27:09Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "4k is the maximum size of a BGP UPDATE, so the guidance would have to be much lower than that to account for the other variable information in the update.\n\nThe last paragraph already mentioned 1k, which is 10x the size you said is rarely exceeded.  Instead of a value here, we should indicate what should be taken into account if the template size could cause the update to exceed the max size: i.e., use extended messages.\n\nIf you agree with the approach, I can suggest text.",
+              "createdAt": "2026-06-22T19:27:09Z",
+              "updatedAt": "2026-06-22T19:27:09Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDw0d-g",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-22T19:28:46Z",
+          "updatedAt": "2026-06-22T19:28:46Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "Similar comment here about mentioning a specific size.\n\nBut it seems important to instead RECOMMEND not carrying large proxy configuration objects.",
+              "createdAt": "2026-06-22T19:28:46Z",
+              "updatedAt": "2026-06-22T19:28:46Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDw27bQ",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-22T19:34:31Z",
+          "updatedAt": "2026-06-22T19:34:32Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "`SHOULD ignore the MASQUE Tunnel Encapsulation TLV`",
+              "createdAt": "2026-06-22T19:34:32Z",
+              "updatedAt": "2026-06-22T19:34:32Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABDw3Ofg",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-22T19:35:04Z",
+          "updatedAt": "2026-06-22T19:35:04Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "I'm suggesting \"SHOULD\" because this action is taken off the optional local configuration.",
+              "createdAt": "2026-06-22T19:35:04Z",
+              "updatedAt": "2026-06-22T19:35:04Z"
             }
           ]
         }
