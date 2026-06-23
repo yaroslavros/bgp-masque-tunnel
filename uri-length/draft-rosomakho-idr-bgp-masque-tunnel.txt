@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 23 December 2026                   Futurewei Technologies, Inc.
-                                                            21 June 2026
+Expires: 25 December 2026                   Futurewei Technologies, Inc.
+                                                            23 June 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 December 2026.
+   This Internet-Draft will expire on 25 December 2026.
 
 Copyright Notice
 
@@ -458,7 +458,7 @@ Table of Contents
    base BGP message size when BGP Extended Messages are available.
    Implementations MAY apply a smaller configurable local limit.  If the
    URI Template Value exceeds the receiver's supported or configured
-   limit, the receiver MUST ignore the enclosing MASQUE Tunnel
+   limit, the receiver SHOULD ignore the enclosing MASQUE Tunnel
    Encapsulation TLV.
 
 8.  Security Considerations
