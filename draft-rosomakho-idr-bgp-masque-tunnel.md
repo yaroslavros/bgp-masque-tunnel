@@ -173,8 +173,8 @@ to be carried using CONNECT-TCP {{CONNECT-TCP}}. This tunnel type is applicable
 to routes or service-specific information that identify TCP connectivity or TCP
 flow steering.
 
-> Name: MASQUE CONNECT-TCP Tunnel  
-> Type: TBD1  
+> Name: MASQUE CONNECT-TCP Tunnel
+> Type: TBD1
 > Length: 0
 
 ## CONNECT-UDP Tunnel Type
