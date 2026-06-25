@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 25 December 2026                   Futurewei Technologies, Inc.
-                                                            23 June 2026
+Expires: 27 December 2026                   Futurewei Technologies, Inc.
+                                                            25 June 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 December 2026.
+   This Internet-Draft will expire on 27 December 2026.
 
 Copyright Notice
 
@@ -437,7 +437,7 @@ Table of Contents
    sessions where BGP Extended Messages [BGP-EXTENDED-MESSAGES] are not
    used.
 
-   Senders SHOULD keep URI Template Values as short as practical.  In
+   Senders should keep URI Template Values as short as practical.  In
    deployments where BGP Extended Messages are not expected to be used,
    URI Template Values SHOULD be kept small enough that the complete BGP
    UPDATE message, including all path attributes, NLRI, and protocol
