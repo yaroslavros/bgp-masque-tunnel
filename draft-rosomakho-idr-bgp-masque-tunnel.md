@@ -207,8 +207,8 @@ type is applicable to routes that identify Ethernet or Layer 2 service
 reachability, such as EVPN or other service-specific Layer 2 reachability
 information.
 
-> Name: MASQUE CONNECT-ETHERNET Tunnel  
-> Type: TBD4  
+> Name: MASQUE CONNECT-ETHERNET Tunnel
+> Type: TBD4
 > Length: 0
 
 # URI Template Sub-TLV {#uri-template-sub-tlv}
