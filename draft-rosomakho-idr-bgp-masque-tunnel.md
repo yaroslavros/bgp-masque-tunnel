@@ -184,8 +184,8 @@ to be carried using CONNECT-UDP {{CONNECT-UDP}}. This tunnel type is applicable
 to routes or service-specific information that identify UDP connectivity or UDP
 flow steering.
 
-> Name: MASQUE CONNECT-UDP Tunnel  
-> Type: TBD2  
+> Name: MASQUE CONNECT-UDP Tunnel
+> Type: TBD2
 > Length: 0
 
 ## CONNECT-IP Tunnel Type
