@@ -80,14 +80,14 @@ In some deployments, BGP is already used as the control plane for advertising
 reachability and associated tunnel encapsulation information. Allowing BGP to
 advertise MASQUE tunnel encapsulation parameters enables a BGP speaker to signal
 that traffic associated with a route is reachable through a MASQUE proxy using
-one of the CONNECT-* mechanisms. This document defines BGP Tunnel Encapsulation
+one of the CONNECT mechanisms. This document defines BGP Tunnel Encapsulation
 Attribute tunnel types for CONNECT-TCP, CONNECT-UDP, CONNECT-IP, and
 CONNECT-ETHERNET.
 
 This document also defines a URI Template Sub-TLV for the BGP Tunnel
 Encapsulation Attribute. The URI Template identifies the MASQUE proxy endpoint
 and provides the template used to construct the HTTP request target for the
-corresponding CONNECT-* request. In addition, because MASQUE tunnels can be
+corresponding CONNECT request. In addition, because MASQUE tunnels can be
 established over different HTTP versions, this document defines an ALPN Sub-TLV
 that can be used to indicate the application-layer protocols supported or
 preferred for use with the advertised tunnel.
@@ -150,11 +150,12 @@ Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 | Sub-TLV | Code |
 | --- | --- |
 | Color | 4 |
-| Load-Balancing Block | 5 |
+| Tunnel Egress Endpoint | 6 |
 | DS Field | 7 |
+| UDP Destination Port | 8 |
 | URI Template | TBD5 |
 | ALPN | TBD6 |
-{: #masque-allowed-sub-tlvs title="Sub-TLVs not defined for use with MASQUE Tunnel Encapsulation TLVs"}
+{: #masque-allowed-sub-tlvs title="Sub-TLVs allowed for use with MASQUE Tunnel Encapsulation TLVs"}
 
 All other Sub-TLVs not explicitly listed above are not defined for use with
 MASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when
@@ -172,8 +173,9 @@ to be carried using CONNECT-TCP {{CONNECT-TCP}}. This tunnel type is applicable
 to routes or service-specific information that identify TCP connectivity or TCP
 flow steering.
 
-   Name: MASQUE CONNECT-TCP Tunnel
-   Type: TBD1
+> Name: MASQUE CONNECT-TCP Tunnel  
+> Type: TBD1  
+> Length: 0
 
 ## CONNECT-UDP Tunnel Type
 
@@ -182,9 +184,9 @@ to be carried using CONNECT-UDP {{CONNECT-UDP}}. This tunnel type is applicable
 to routes or service-specific information that identify UDP connectivity or UDP
 flow steering.
 
-   Name: MASQUE CONNECT-UDP Tunnel
-   Type: TBD2
-
+> Name: MASQUE CONNECT-UDP Tunnel  
+> Type: TBD2  
+> Length: 0
 
 ## CONNECT-IP Tunnel Type
 
@@ -193,8 +195,9 @@ to be carried using CONNECT-IP {{CONNECT-IP}}. This tunnel type is applicable to
 routes that identify IP reachability, such as IP prefixes, VPN-IP routes, or
 other service-specific IP reachability information.
 
-   Name: MASQUE CONNECT-IP Tunnel
-   Type: TBD3
+> Name: MASQUE CONNECT-IP Tunnel  
+> Type: TBD3  
+> Length: 0
 
 ## CONNECT-ETHERNET Tunnel Type
 
@@ -204,8 +207,9 @@ type is applicable to routes that identify Ethernet or Layer 2 service
 reachability, such as EVPN or other service-specific Layer 2 reachability
 information.
 
-   Name: MASQUE CONNECT-ETHERNET Tunnel
-   Type: TBD4
+> Name: MASQUE CONNECT-ETHERNET Tunnel  
+> Type: TBD4  
+> Length: 0
 
 # URI Template Sub-TLV {#uri-template-sub-tlv}
 
@@ -253,7 +257,7 @@ path components, or if it is otherwise not usable with the MASQUE mechanism
 identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
 Encapsulation TLV MUST be ignored.
 
-The Tunnel Egress Endpoint Sub-TLV defined by RFC 9012 is not used with MASQUE
+The Tunnel Egress Endpoint Sub-TLV defined by {{BGP-TUNNEL-ENCAP-ATTR}} is not used with MASQUE
 Tunnel Encapsulation TLVs because the authority component of the URI Template
 identifies the MASQUE proxy endpoint and provides the information necessary
 to establish the corresponding HTTP connection.
@@ -351,17 +355,17 @@ used to advertise alternative MASQUE proxies. Selection among available tunnel
 candidates is left to local policy and outside the scope of this specification.
 
 A BGP Tunnel Encapsulation Attribute MAY contain both MASQUE Tunnel Encapsulation
-TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by RFC 9012 or
+TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by {{BGP-TUNNEL-ENCAP-ATTR}} or
 subsequent specifications. This document does not define any preference between
 MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is
 determined by local policy and the procedures applicable to the associated
 AFI/SAFI.
 
-Operators SHOULD consider the size and stability of URI Template values when
-attaching MASQUE Tunnel Encapsulation TLVs to routes. Large URI Templates, or
-frequent changes to URI Templates, can increase BGP UPDATE size and route churn.
+Operators should consider the stability of URI Template values when
+attaching MASQUE Tunnel Encapsulation TLVs to routes.
+Frequent changes to URI Templates, can increase route churn.
 Deployments that advertise the same MASQUE proxy parameters for many routes
-SHOULD consider existing BGP mechanisms and service-specific profiles that avoid
+should consider existing BGP mechanisms and service-specific profiles that avoid
 unnecessary repetition.
 
 # Security Considerations
@@ -387,6 +391,7 @@ unintended MASQUE proxy. This can result in traffic interception, denial of
 service, policy bypass, or loss of connectivity. Operators should apply the same
 route filtering, origin validation, session protection, and import/export policy
 controls used for other BGP routes carrying tunnel encapsulation information.
+For more details, see Section 11 of {{BGP-TUNNEL-ENCAP-ATTR}}.
 
 The URI Template Sub-TLV can reveal information about proxy hostnames, service
 structure, tenant identifiers, or internal topology. Such information can be
