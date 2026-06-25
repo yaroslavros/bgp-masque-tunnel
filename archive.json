@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-23T01:58:01.348745+00:00",
+  "timestamp": "2026-06-25T02:00:41.822917+00:00",
   "repo": "yaroslavros/bgp-masque-tunnel",
   "labels": [
     {
@@ -209,13 +209,13 @@
       "labels": [],
       "body": "To address https://github.com/yaroslavros/bgp-masque-tunnel/issues/2\r\n\r\nIn practice, URI templates are reasonably short and rarely exceed 100 octets.",
       "createdAt": "2026-06-21T20:44:59Z",
-      "updatedAt": "2026-06-22T19:35:04Z",
+      "updatedAt": "2026-06-24T17:38:54Z",
       "baseRepository": "yaroslavros/bgp-masque-tunnel",
       "baseRefName": "main",
       "baseRefOid": "ce1d4cc1cfd60b58b01a0b748ec2a1850c2b2b10",
       "headRepository": "yaroslavros/bgp-masque-tunnel",
       "headRefName": "uri-length",
-      "headRefOid": "80937271e9d8e8c876b1c967558d2f02b143b8b9",
+      "headRefOid": "20bc21c5f01ac4c96bf529ee1df6e62e4906cfa3",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -299,6 +299,86 @@
               "body": "I'm suggesting \"SHOULD\" because this action is taken off the optional local configuration.",
               "createdAt": "2026-06-22T19:35:04Z",
               "updatedAt": "2026-06-22T19:35:04Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABD6zv3g",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-23T23:55:32Z",
+          "updatedAt": "2026-06-23T23:55:33Z",
+          "comments": [
+            {
+              "originalPosition": 24,
+              "body": "I think concrete guidance would still be beneficial for proxy implementors who don't know much about BGP.\r\n\r\nI agree that the 4096 should not be mentioned at all, <del>640kb</del> 1024 is long enough for all the reasonable use cases.\r\n\r\nPlease suggest edit!",
+              "createdAt": "2026-06-23T23:55:32Z",
+              "updatedAt": "2026-06-23T23:55:33Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABD6z3Dg",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-23T23:56:00Z",
+          "updatedAt": "2026-06-23T23:56:01Z",
+          "comments": [
+            {
+              "originalPosition": 32,
+              "body": "Yup. Please make a suggestion",
+              "createdAt": "2026-06-23T23:56:00Z",
+              "updatedAt": "2026-06-23T23:56:01Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABD60J5A",
+          "commit": {
+            "abbreviatedOid": "8093727"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-23T23:57:22Z",
+          "updatedAt": "2026-06-23T23:57:22Z",
+          "comments": [
+            {
+              "originalPosition": 36,
+              "body": "Makes sense. Updated to SHOULD",
+              "createdAt": "2026-06-23T23:57:22Z",
+              "updatedAt": "2026-06-23T23:57:35Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEBGIAQ",
+          "commit": {
+            "abbreviatedOid": "20bc21c"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-24T17:38:54Z",
+          "updatedAt": "2026-06-24T17:38:54Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "```suggestion\nSenders should keep URI Template Values as short as practical. In deployments\n```",
+              "createdAt": "2026-06-24T17:38:54Z",
+              "updatedAt": "2026-06-24T17:38:54Z"
             }
           ]
         }
