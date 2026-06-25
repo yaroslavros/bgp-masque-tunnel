@@ -195,8 +195,8 @@ to be carried using CONNECT-IP {{CONNECT-IP}}. This tunnel type is applicable to
 routes that identify IP reachability, such as IP prefixes, VPN-IP routes, or
 other service-specific IP reachability information.
 
-> Name: MASQUE CONNECT-IP Tunnel  
-> Type: TBD3  
+> Name: MASQUE CONNECT-IP Tunnel
+> Type: TBD3
 > Length: 0
 
 ## CONNECT-ETHERNET Tunnel Type
