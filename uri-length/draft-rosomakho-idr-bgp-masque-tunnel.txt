@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 27 December 2026                   Futurewei Technologies, Inc.
-                                                            25 June 2026
+Expires: 28 December 2026                   Futurewei Technologies, Inc.
+                                                            26 June 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 December 2026.
+   This Internet-Draft will expire on 28 December 2026.
 
 Copyright Notice
 
@@ -437,29 +437,19 @@ Table of Contents
    sessions where BGP Extended Messages [BGP-EXTENDED-MESSAGES] are not
    used.
 
-   Senders should keep URI Template Values as short as practical.  In
-   deployments where BGP Extended Messages are not expected to be used,
-   URI Template Values SHOULD be kept small enough that the complete BGP
-   UPDATE message, including all path attributes, NLRI, and protocol
-   overhead, can be carried without requiring BGP Extended Messages.  As
-   a practical guideline, URI Template Values intended for such
-   deployments SHOULD NOT exceed 1024 octets.
+   URI Template Values SHOULD NOT exceed 1024 octets and should be kept
+   as short as practical.
 
-   URI Template Values longer than 4096 octets SHOULD only be used in
-   deployments where BGP Extended Messages are expected to be available
-   on all BGP sessions over which the corresponding routes are
-   propagated.  Such long URI Template Values can prevent route
-   propagation across sessions that do not support BGP Extended Messages
-   and can increase BGP UPDATE processing and memory requirements.
+   Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended
+   Messages [BGP-EXTENDED-MESSAGES] on the BGP sessions over which the
+   corresponding routes are propagated.  If BGP Extended Messages are
+   not available, URI Template Values MUST be kept small enough that the
+   complete BGP UPDATE message, including all path attributes, NLRI, and
+   protocol overhead, does not exceed 4096 octets.
 
-   A URI Template Value SHOULD NOT exceed 8192 octets.  This limit is
-   intended to avoid using BGP to carry large proxy configuration
-   objects while still allowing URI Templates that are longer than the
-   base BGP message size when BGP Extended Messages are available.
-   Implementations MAY apply a smaller configurable local limit.  If the
-   URI Template Value exceeds the receiver's supported or configured
-   limit, the receiver SHOULD ignore the enclosing MASQUE Tunnel
-   Encapsulation TLV.
+   If the URI Template Value exceeds the receiver's supported or
+   configured limit, the receiver SHOULD ignore the enclosing MASQUE
+   Tunnel Encapsulation TLV.
 
 8.  Security Considerations
 
