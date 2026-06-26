@@ -80,7 +80,7 @@ In some deployments, BGP is already used as the control plane for advertising
 reachability and associated tunnel encapsulation information. Allowing BGP to
 advertise MASQUE tunnel encapsulation parameters enables a BGP speaker to signal
 that traffic associated with a route is reachable through a MASQUE proxy using
-one of the CONNECT mechanisms. This document defines BGP Tunnel Encapsulation
+one of the template-driven CONNECT mechanisms. This document defines BGP Tunnel Encapsulation
 Attribute tunnel types for CONNECT-TCP, CONNECT-UDP, CONNECT-IP, and
 CONNECT-ETHERNET.
 
@@ -150,9 +150,7 @@ Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 | Sub-TLV | Code |
 | --- | --- |
 | Color | 4 |
-| Tunnel Egress Endpoint | 6 |
 | DS Field | 7 |
-| UDP Destination Port | 8 |
 | URI Template | TBD5 |
 | ALPN | TBD6 |
 {: #masque-allowed-sub-tlvs title="Sub-TLVs allowed for use with MASQUE Tunnel Encapsulation TLVs"}
