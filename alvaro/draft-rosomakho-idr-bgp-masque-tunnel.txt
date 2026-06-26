@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 27 December 2026                   Futurewei Technologies, Inc.
-                                                            25 June 2026
+Expires: 28 December 2026                   Futurewei Technologies, Inc.
+                                                            26 June 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 27 December 2026.
+   This Internet-Draft will expire on 28 December 2026.
 
 Copyright Notice
 
@@ -118,9 +118,9 @@ Table of Contents
    information.  Allowing BGP to advertise MASQUE tunnel encapsulation
    parameters enables a BGP speaker to signal that traffic associated
    with a route is reachable through a MASQUE proxy using one of the
-   CONNECT mechanisms.  This document defines BGP Tunnel Encapsulation
-   Attribute tunnel types for CONNECT-TCP, CONNECT-UDP, CONNECT-IP, and
-   CONNECT-ETHERNET.
+   template-driven CONNECT mechanisms.  This document defines BGP Tunnel
+   Encapsulation Attribute tunnel types for CONNECT-TCP, CONNECT-UDP,
+   CONNECT-IP, and CONNECT-ETHERNET.
 
    This document also defines a URI Template Sub-TLV for the BGP Tunnel
    Encapsulation Attribute.  The URI Template identifies the MASQUE
@@ -193,24 +193,21 @@ Table of Contents
    Only the following Sub-TLVs are applicable to MASQUE Tunnel
    Encapsulation TLVs:
 
-                     +========================+======+
-                     | Sub-TLV                | Code |
-                     +========================+======+
-                     | Color                  | 4    |
-                     +------------------------+------+
-                     | Tunnel Egress Endpoint | 6    |
-                     +------------------------+------+
-                     | DS Field               | 7    |
-                     +------------------------+------+
-                     | UDP Destination Port   | 8    |
-                     +------------------------+------+
-                     | URI Template           | TBD5 |
-                     +------------------------+------+
-                     | ALPN                   | TBD6 |
-                     +------------------------+------+
+                          +==============+======+
+                          | Sub-TLV      | Code |
+                          +==============+======+
+                          | Color        | 4    |
+                          +--------------+------+
+                          | DS Field     | 7    |
+                          +--------------+------+
+                          | URI Template | TBD5 |
+                          +--------------+------+
+                          | ALPN         | TBD6 |
+                          +--------------+------+
 
-                       Table 1: Sub-TLVs allowed for
-                           use with MASQUE Tunnel
+                             Table 1: Sub-TLVs
+                            allowed for use with
+                               MASQUE Tunnel
                              Encapsulation TLVs
 
    All other Sub-TLVs not explicitly listed above are not defined for
