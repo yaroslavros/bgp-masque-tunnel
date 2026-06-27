@@ -83,13 +83,13 @@ Table of Contents
    5.  ALPN Sub-TLV
    6.  Use with BGP NLRI
    7.  Operational Considerations
-   8.  Security Considerations
-   9.  IANA Considerations
-     9.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
-     9.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+     7.1.  URI Template Length
+   8.  IANA Considerations
+     8.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
+     8.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -419,7 +419,43 @@ Table of Contents
    consider existing BGP mechanisms and service-specific profiles that
    avoid unnecessary repetition.
 
-8.  Security Considerations
+7.1.  URI Template Length
+
+   [URI-TEMPLATE] does not define a general maximum length for a URI
+   Template.  When a URI Template is carried in the URI Template Sub-
+   TLV, the length of the URI Template Value is constrained by the Sub-
+   TLV encoding and by the size of the BGP UPDATE message in which the
+   Sub-TLV is carried.
+
+   The URI Template Sub-TLV uses a two-octet Length field.  This allows
+   the URI Template Value to be longer than 255 octets.  However, long
+   URI Template Values can significantly increase the size of the
+   enclosing BGP UPDATE message and can affect propagation across BGP
+   sessions where BGP Extended Messages [BGP-EXTENDED-MESSAGES] are not
+   used.
+
+   URI Template Values SHOULD NOT exceed 1024 octets and should be kept
+   as short as practical.
+
+   Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended
+   Messages [BGP-EXTENDED-MESSAGES] on the BGP sessions over which the
+   corresponding routes are propagated.  If BGP Extended Messages are
+   not available, URI Template Values MUST be kept small enough that the
+   complete BGP UPDATE message, including all path attributes, NLRI, and
+   protocol overhead, does not exceed 4096 octets.
+
+   If the URI Template Value exceeds the receiver's supported or
+   configured limit, the receiver SHOULD ignore the enclosing MASQUE
+   Tunnel Encapsulation TLV.
+
+   If the length of the URI Template results in the BGP UPDATE exceeding
+   the maximum message size, the result may include a lack of
+   reachability, as detailed in [BGP-EXTENDED-MESSAGES].  If BGP
+   Extended Messages are partially supported, the BGP Tunnel
+   Encapsulation Attribute may be discarded [BGP-EXTENDED-MESSAGES], as
+   it is eligible under the "attribute discard" approach of
+   [BGP-ERROR-HANDLING], which would result in the information not
+   reaching the intended recipients. # Security Considerations
 
    The security considerations of [BGP-TUNNEL-ENCAP-ATTR],
    [CONNECT-UDP], [CONNECT-IP], [CONNECT-TCP], [CONNECT-ETHERNET],
@@ -470,12 +506,12 @@ Table of Contents
    that the advertising speaker did not intend to support for that
    tunnel.
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    IANA is requested to update the "BGP Tunnel Encapsulation" registry
    group as specified in the following sections.
 
-9.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
+8.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
 
    IANA is requested to allocate the following values from the "BGP
    Tunnel Encapsulation Attribute Tunnel Types" registry:
@@ -495,7 +531,7 @@ Table of Contents
                  Table 2: MASQUE BGP Tunnel Encapsulation
                           Attribute Tunnel Types
 
-9.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
+8.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
 
    IANA is requested to allocate the following values from the 192-252
    range in the "BGP Tunnel Encapsulation Attribute Sub-TLVs" registry:
@@ -511,9 +547,9 @@ Table of Contents
                         Table 3: MASQUE BGP Tunnel
                      Encapsulation Attribute Sub-TLVs
 
-10.  References
+9.  References
 
-10.1.  Normative References
+9.1.  Normative References
 
    [ALPN]     Friedl, S., Popov, A., Langley, A., and E. Stephan,
               "Transport Layer Security (TLS) Application-Layer Protocol
@@ -565,7 +601,18 @@ Table of Contents
               DOI 10.17487/RFC6570, March 2012,
               <https://www.rfc-editor.org/rfc/rfc6570>.
 
-10.2.  Informative References
+9.2.  Informative References
+
+   [BGP-ERROR-HANDLING]
+              Chen, E., Ed., Scudder, J., Ed., Mohapatra, P., and K.
+              Patel, "Revised Error Handling for BGP UPDATE Messages",
+              RFC 7606, DOI 10.17487/RFC7606, August 2015,
+              <https://www.rfc-editor.org/rfc/rfc7606>.
+
+   [BGP-EXTENDED-MESSAGES]
+              Bush, R., Patel, K., and D. Ward, "Extended Message
+              Support for BGP", RFC 8654, DOI 10.17487/RFC8654, October
+              2019, <https://www.rfc-editor.org/rfc/rfc8654>.
 
    [HTTP/1.1] Fielding, R., Ed., Nottingham, M., Ed., and J. Reschke,
               Ed., "HTTP/1.1", STD 99, RFC 9112, DOI 10.17487/RFC9112,
