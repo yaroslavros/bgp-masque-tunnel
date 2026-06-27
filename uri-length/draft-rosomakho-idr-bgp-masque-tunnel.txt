@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 28 December 2026                   Futurewei Technologies, Inc.
-                                                            26 June 2026
+Expires: 29 December 2026                   Futurewei Technologies, Inc.
+                                                            27 June 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 December 2026.
+   This Internet-Draft will expire on 29 December 2026.
 
 Copyright Notice
 
@@ -84,13 +84,12 @@ Table of Contents
    6.  Use with BGP NLRI
    7.  Operational Considerations
      7.1.  URI Template Length
-   8.  Security Considerations
-   9.  IANA Considerations
-     9.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
-     9.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
-   10. References
-     10.1.  Normative References
-     10.2.  Informative References
+   8.  IANA Considerations
+     8.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
+     8.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
+   9.  References
+     9.1.  Normative References
+     9.2.  Informative References
    Acknowledgments
    Authors' Addresses
 
@@ -451,7 +450,14 @@ Table of Contents
    configured limit, the receiver SHOULD ignore the enclosing MASQUE
    Tunnel Encapsulation TLV.
 
-8.  Security Considerations
+   If the length of the URI Template results in the BGP UPDATE exceeding
+   the maximum message size, the result may include a lack of
+   reachability, as detailed in [BGP-EXTENDED-MESSAGES].  If BGP
+   Extended Messages are partially supported, the BGP Tunnel
+   Encapsulation Attribute may be discarded [BGP-EXTENDED-MESSAGES], as
+   it is eligible under the "attribute discard" approach of
+   [BGP-ERROR-HANDLING], which would result in the information not
+   reaching the intended recipients. # Security Considerations
 
    The security considerations of [BGP-TUNNEL-ENCAP-ATTR],
    [CONNECT-UDP], [CONNECT-IP], [CONNECT-TCP], [CONNECT-ETHERNET],
@@ -501,12 +507,12 @@ Table of Contents
    that the advertising speaker did not intend to support for that
    tunnel.
 
-9.  IANA Considerations
+8.  IANA Considerations
 
    IANA is requested to update the "BGP Tunnel Encapsulation" registry
    group as specified in the following sections.
 
-9.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
+8.1.  BGP Tunnel Encapsulation Attribute Tunnel Types
 
    IANA is requested to allocate the following values from the "BGP
    Tunnel Encapsulation Attribute Tunnel Types" registry:
@@ -526,7 +532,7 @@ Table of Contents
                  Table 2: MASQUE BGP Tunnel Encapsulation
                           Attribute Tunnel Types
 
-9.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
+8.2.  BGP Tunnel Encapsulation Attribute Sub-TLVs
 
    IANA is requested to allocate the following values from the 192-252
    range in the "BGP Tunnel Encapsulation Attribute Sub-TLVs" registry:
@@ -542,9 +548,9 @@ Table of Contents
                         Table 3: MASQUE BGP Tunnel
                      Encapsulation Attribute Sub-TLVs
 
-10.  References
+9.  References
 
-10.1.  Normative References
+9.1.  Normative References
 
    [ALPN]     Friedl, S., Popov, A., Langley, A., and E. Stephan,
               "Transport Layer Security (TLS) Application-Layer Protocol
@@ -596,7 +602,13 @@ Table of Contents
               DOI 10.17487/RFC6570, March 2012,
               <https://www.rfc-editor.org/rfc/rfc6570>.
 
-10.2.  Informative References
+9.2.  Informative References
+
+   [BGP-ERROR-HANDLING]
+              Chen, E., Ed., Scudder, J., Ed., Mohapatra, P., and K.
+              Patel, "Revised Error Handling for BGP UPDATE Messages",
+              RFC 7606, DOI 10.17487/RFC7606, August 2015,
+              <https://www.rfc-editor.org/rfc/rfc7606>.
 
    [BGP-EXTENDED-MESSAGES]
               Bush, R., Patel, K., and D. Ward, "Extended Message
