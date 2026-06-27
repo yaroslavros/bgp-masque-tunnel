@@ -389,6 +389,13 @@ including all path attributes, NLRI, and protocol overhead, does not exceed
 If the URI Template Value exceeds the receiver's supported or configured
 limit, the receiver SHOULD ignore the enclosing MASQUE Tunnel Encapsulation TLV.
 
+If the length of the URI Template results in the BGP UPDATE exceeding the
+maximum message size, the result may include a lack of reachability, as detailed
+in {{BGP-EXTENDED-MESSAGES}}. If BGP Extended Messages are partially supported,
+the BGP Tunnel Encapsulation Attribute may be discarded {{BGP-EXTENDED-MESSAGES}},
+as it is eligible under the "attribute discard" approach of
+{{?BGP-ERROR-HANDLING=RFC7606}}, which would result in the information
+not reaching the intended recipients.
 # Security Considerations
 
 The security considerations of {{BGP-TUNNEL-ENCAP-ATTR}}, {{CONNECT-UDP}},
