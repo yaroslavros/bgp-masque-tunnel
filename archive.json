@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2026-06-25T02:00:41.822917+00:00",
+  "timestamp": "2026-06-28T02:07:01.961840+00:00",
   "repo": "yaroslavros/bgp-masque-tunnel",
   "labels": [
     {
@@ -55,15 +55,15 @@
       "id": "I_kwDOSkVUEM8AAAABF6obvQ",
       "title": "How big can an URI template be?",
       "url": "https://github.com/yaroslavros/bgp-masque-tunnel/issues/2",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "aretana",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "> Question: how big can an URI template be?\r\n\r\nI don't believe URI or URI templates specification define a ceiling.\r\nClearly, to reliably fit URI template into BGP UPDATE message it must be constrained to a reasonable length. How would you recommend defining it?\r\n\r\n_Originally posted by @yaroslavros in https://github.com/yaroslavros/bgp-masque-tunnel/issues/1#issuecomment-4740186341_\r\n            ",
       "createdAt": "2026-06-18T11:40:45Z",
-      "updatedAt": "2026-06-18T11:43:37Z",
-      "closedAt": null,
+      "updatedAt": "2026-06-27T22:41:40Z",
+      "closedAt": "2026-06-27T22:41:40Z",
       "comments": [
         {
           "author": "aretana",
@@ -73,6 +73,22 @@
           "updatedAt": "2026-06-18T11:43:37Z"
         }
       ]
+    },
+    {
+      "number": 5,
+      "id": "I_kwDOSkVUEM8AAAABGzcnTQ",
+      "title": "Tunnel Egress Endpoint TLV",
+      "url": "https://github.com/yaroslavros/bgp-masque-tunnel/issues/5",
+      "state": "OPEN",
+      "author": "aretana",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "We need to revisit how the Tunnel Egress Endpoint TLV interacts with the FQDN in the URI.  Need some feedback form idr/masque.",
+      "createdAt": "2026-06-26T11:18:22Z",
+      "updatedAt": "2026-06-26T11:18:22Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -202,25 +218,35 @@
       "id": "PR_kwDOSkVUEM7o7UHX",
       "title": "Added URI Template Length operational considerations",
       "url": "https://github.com/yaroslavros/bgp-masque-tunnel/pull/3",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "yaroslavros",
       "authorAssociation": "OWNER",
       "assignees": [],
       "labels": [],
       "body": "To address https://github.com/yaroslavros/bgp-masque-tunnel/issues/2\r\n\r\nIn practice, URI templates are reasonably short and rarely exceed 100 octets.",
       "createdAt": "2026-06-21T20:44:59Z",
-      "updatedAt": "2026-06-24T17:38:54Z",
+      "updatedAt": "2026-06-27T22:41:25Z",
       "baseRepository": "yaroslavros/bgp-masque-tunnel",
       "baseRefName": "main",
       "baseRefOid": "ce1d4cc1cfd60b58b01a0b748ec2a1850c2b2b10",
       "headRepository": "yaroslavros/bgp-masque-tunnel",
       "headRefName": "uri-length",
-      "headRefOid": "20bc21c5f01ac4c96bf529ee1df6e62e4906cfa3",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
-      "comments": [],
+      "headRefOid": "055660eb6bab325523b79b72143905e289aa91c9",
+      "closedAt": "2026-06-27T22:41:25Z",
+      "mergedAt": "2026-06-27T22:41:25Z",
+      "mergedBy": "yaroslavros",
+      "mergeCommit": {
+        "oid": "26129166ca06936750bbd992a339bbba9cc24fe7"
+      },
+      "comments": [
+        {
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "body": "@aretana please review the update text",
+          "createdAt": "2026-06-26T10:56:33Z",
+          "updatedAt": "2026-06-26T10:56:33Z"
+        }
+      ],
       "reviews": [
         {
           "id": "PRR_kwDOSkVUEM8AAAABDwzvdQ",
@@ -379,6 +405,239 @@
               "body": "```suggestion\nSenders should keep URI Template Values as short as practical. In deployments\n```",
               "createdAt": "2026-06-24T17:38:54Z",
               "updatedAt": "2026-06-24T17:38:54Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEBGVAA",
+          "commit": {
+            "abbreviatedOid": "20662cf"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2026-06-24T17:39:29Z",
+          "updatedAt": "2026-06-26T11:26:08Z",
+          "comments": [
+            {
+              "originalPosition": 18,
+              "body": "```suggestion\nwhere BGP Extended Messages are not expected to be fully supported, URI Template Values\n```",
+              "createdAt": "2026-06-24T17:39:29Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 19,
+              "body": "```suggestion\nshould be kept small enough that the complete BGP UPDATE message, including all\n```",
+              "createdAt": "2026-06-24T17:40:17Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 21,
+              "body": "```suggestion\nBGP Extended Messages. \n```",
+              "createdAt": "2026-06-24T17:42:47Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 31,
+              "body": "```suggestion\nAs a practical guideline, URI Template Values intended for such deployments SHOULD NOT exceed 1024 octets. This limit is intended to\n```",
+              "createdAt": "2026-06-24T17:43:55Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 32,
+              "body": "```suggestion\navoid using BGP to carry large proxy configuration objects.\n```",
+              "createdAt": "2026-06-24T17:44:57Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 34,
+              "body": "```suggestion\n Implementations MAY apply a smaller configurable local\n```",
+              "createdAt": "2026-06-24T17:46:17Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 33,
+              "body": "```suggestion\n\n```",
+              "createdAt": "2026-06-24T17:46:29Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 22,
+              "body": "```suggestion\n \n```",
+              "createdAt": "2026-06-24T17:46:40Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 37,
+              "body": "```suggestion\n\nIf the length of the URI Template results in the BGP UPDATE exceeding the\nmaximum message size, the result may include a lack of reachability, as detailed\nin {{BGP-EXTENDED-MESSAGES}}. If BGP Extended Messages are partially supported,\nthe BGP Tunnel Encapsulation Attribute may be discarded {{BGP-EXTENDED-MESSAGES}},\nas it is eligible under the \"attribute discard\" approach of\n{{?BGP-ERROR-HANDLING=RFC7606}}, which would result in the information\nnot reaching the intended recipients.\n```",
+              "createdAt": "2026-06-24T17:50:25Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "I did, but I don't know if I screwed up the format. :-(\n\nThe intent is for the paragraphs starting with \"Senders should keep...\" to read:\n\n> Senders should keep URI Template Values as short as practical. In deployments\n> where BGP Extended Messages are not expected to be fully supported, URI Template\n> Values should be kept small enough that the complete BGP UPDATE message,\n> including all path attributes, NLRI, and protocol overhead, can be carried\n> without requiring BGP Extended Messages. \n> \n> As a practical guideline, URI Template Values intended for such deployments\n> SHOULD NOT exceed 1024 octets. This limit is intended to avoid using BGP to\n> carry large proxy configuration objects. Implementations MAY apply a smaller\n> configurable local limit. If the URI Template Value exceeds the receiver's\n> supported or configured limit, the receiver SHOULD ignore the enclosing MASQUE\n> Tunnel Encapsulation TLV.\n> \n> If the length of the URI Template results in the BGP UPDATE exceeding the\n> maximum message size, the result may include a lack of reachability, as detailed\n> in [RFC8654]. If BGP Extended Messages are partially supported, the BGP Tunnel\n> Encapsulation Attribute may be discarded [RFC8654], as it is eligible under the\n> \"attribute discard\" approach of [RFC7606], which would result in the information\n> not reaching the intended receivers.",
+              "createdAt": "2026-06-24T17:57:22Z",
+              "updatedAt": "2026-06-26T11:26:08Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "PR_kwDOSkVUEM7qhSuj",
+      "title": "Second Pass",
+      "url": "https://github.com/yaroslavros/bgp-masque-tunnel/pull/4",
+      "state": "MERGED",
+      "author": "aretana",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Cleaned up the table of allowed sub-TLVs and other minor changes.",
+      "createdAt": "2026-06-25T10:52:15Z",
+      "updatedAt": "2026-06-27T22:39:23Z",
+      "baseRepository": "yaroslavros/bgp-masque-tunnel",
+      "baseRefName": "main",
+      "baseRefOid": "ce1d4cc1cfd60b58b01a0b748ec2a1850c2b2b10",
+      "headRepository": "yaroslavros/bgp-masque-tunnel",
+      "headRefName": "alvaro",
+      "headRefOid": "fd104bdb2c4ddb761b1ff064f12e5975e072196d",
+      "closedAt": "2026-06-27T22:39:23Z",
+      "mergedAt": "2026-06-27T22:39:23Z",
+      "mergedBy": "yaroslavros",
+      "mergeCommit": {
+        "oid": "9a9d131e13a7ce5500b82eea2fd45dd820b3c82e"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEGhCpQ",
+          "commit": {
+            "abbreviatedOid": "fb7d550"
+          },
+          "author": "github-actions",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-25T10:52:38Z",
+          "updatedAt": "2026-06-25T10:52:39Z",
+          "comments": [
+            {
+              "originalPosition": 76,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-ETHERNET Tunnel\n> Type: TBD4\n````",
+              "createdAt": "2026-06-25T10:52:38Z",
+              "updatedAt": "2026-06-25T10:52:39Z"
+            },
+            {
+              "originalPosition": 64,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-IP Tunnel\n> Type: TBD3\n````",
+              "createdAt": "2026-06-25T10:52:38Z",
+              "updatedAt": "2026-06-25T10:52:39Z"
+            },
+            {
+              "originalPosition": 52,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-UDP Tunnel\n> Type: TBD2\n````",
+              "createdAt": "2026-06-25T10:52:39Z",
+              "updatedAt": "2026-06-25T10:52:39Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-TCP Tunnel\n> Type: TBD1\n````",
+              "createdAt": "2026-06-25T10:52:39Z",
+              "updatedAt": "2026-06-25T10:52:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEGi1cg",
+          "commit": {
+            "abbreviatedOid": "c4d24b9"
+          },
+          "author": "github-actions",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-25T10:56:39Z",
+          "updatedAt": "2026-06-25T10:56:39Z",
+          "comments": [
+            {
+              "originalPosition": 64,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-IP Tunnel\n> Type: TBD3\n````",
+              "createdAt": "2026-06-25T10:56:39Z",
+              "updatedAt": "2026-06-25T10:56:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEGjFtw",
+          "commit": {
+            "abbreviatedOid": "75e7c55"
+          },
+          "author": "github-actions",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-25T10:57:17Z",
+          "updatedAt": "2026-06-25T10:57:17Z",
+          "comments": [
+            {
+              "originalPosition": 39,
+              "body": "````suggestion\n> Name: MASQUE CONNECT-TCP Tunnel\n> Type: TBD1\n````",
+              "createdAt": "2026-06-25T10:57:17Z",
+              "updatedAt": "2026-06-25T10:57:17Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEOpq2g",
+          "commit": {
+            "abbreviatedOid": "3adc790"
+          },
+          "author": "yaroslavros",
+          "authorAssociation": "OWNER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-26T10:38:31Z",
+          "updatedAt": "2026-06-26T10:43:38Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "```suggestion\none of the template-driven CONNECT mechanisms. This document defines BGP Tunnel Encapsulation\n```\n\nOtherwise reader may assume that standard CONNECT is also supported.",
+              "createdAt": "2026-06-26T10:38:31Z",
+              "updatedAt": "2026-06-26T10:43:38Z"
+            },
+            {
+              "originalPosition": 24,
+              "body": "```suggestion\n```\n\nI thought we are not allowing UDP destination port since it is part of URI template and we want to avoid unnecessary conflict?",
+              "createdAt": "2026-06-26T10:40:50Z",
+              "updatedAt": "2026-06-26T10:43:38Z"
+            },
+            {
+              "originalPosition": 22,
+              "body": "```suggestion\n```\n\nLet's disallow it for -00. It would be great to get some feedback from masque and idr about it. If this is allowed there need to be very clear language about interaction between this IP and FQDN in the URI.",
+              "createdAt": "2026-06-26T10:43:21Z",
+              "updatedAt": "2026-06-26T10:43:39Z"
+            }
+          ]
+        },
+        {
+          "id": "PRR_kwDOSkVUEM8AAAABEO6myA",
+          "commit": {
+            "abbreviatedOid": "3adc790"
+          },
+          "author": "aretana",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2026-06-26T11:19:36Z",
+          "updatedAt": "2026-06-26T11:19:37Z",
+          "comments": [
+            {
+              "originalPosition": 22,
+              "body": "Yes.  I created Issue #5 so we don't forget to revisit it.",
+              "createdAt": "2026-06-26T11:19:36Z",
+              "updatedAt": "2026-06-26T11:19:37Z"
             }
           ]
         }
