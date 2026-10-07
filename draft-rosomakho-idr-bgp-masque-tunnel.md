@@ -51,9 +51,9 @@ informative:
 
 This document defines BGP Tunnel Encapsulation Attribute tunnel types for
 MASQUE CONNECT-TCP, CONNECT-UDP, CONNECT-IP, and CONNECT-ETHERNET. It also
-defines URI Template and ALPN Sub-TLVs for advertising the MASQUE proxy endpoint,
-the HTTP request target template, and the application-layer protocol constraints
-used to establish the corresponding MASQUE tunnel.
+defines URI Template and SVCB Parameters Sub-TLVs for advertising the MASQUE
+proxy endpoint, the HTTP request target template, and extensible connection
+parameters used to establish the corresponding MASQUE tunnel.
 
 --- middle
 
@@ -87,10 +87,12 @@ CONNECT-ETHERNET.
 This document also defines a URI Template Sub-TLV for the BGP Tunnel
 Encapsulation Attribute. The URI Template identifies the MASQUE proxy endpoint
 and provides the template used to construct the HTTP request target for the
-corresponding CONNECT request. In addition, because MASQUE tunnels can be
-established over different HTTP versions, this document defines an ALPN Sub-TLV
-that can be used to indicate the application-layer protocols supported or
-preferred for use with the advertised tunnel.
+corresponding CONNECT request. This document also defines an SVCB Parameters
+Sub-TLV that reuses the service parameter encoding and registry of SVCB and
+HTTPS resource records {{!SVCB=RFC9460}}. It carries ALPN identifiers and other
+connection parameters as a single parameter set. These parameters are
+advertised through BGP and need not correspond to a DNS resource record
+published for the MASQUE proxy.
 
 This document does not define new BGP NLRI, does not define a new MASQUE
 protocol mechanism, and does not define a new proxy authentication or
@@ -104,8 +106,8 @@ remain the responsibility of the endpoints and the applicable HTTP and TLS mecha
 {::boilerplate bcp14-tagged}
 
 This document uses terminology from {{BGP-TUNNEL-ENCAP-ATTR}},
-{{CONNECT-UDP}}, {{CONNECT-IP}}, {{CONNECT-TCP}}, and
-{{CONNECT-ETHERNET}}.
+{{CONNECT-UDP}}, {{CONNECT-IP}}, {{CONNECT-TCP}},
+{{CONNECT-ETHERNET}}, and {{SVCB}}.
 
 MASQUE proxy:
 : An HTTP proxy that supports one or more of the MASQUE CONNECT mechanisms
@@ -123,6 +125,10 @@ URI Template:
 ALPN:
 : Application-Layer Protocol Negotiation, as defined by {{!ALPN=RFC7301}}.
 
+SvcParam:
+: A service parameter consisting of a SvcParamKey and a SvcParamValue, as
+  defined by {{SVCB}}.
+
 # MASQUE Tunnel Encapsulation
 
 A Tunnel Encapsulation TLV using one of the tunnel types defined in this
@@ -131,9 +137,9 @@ using the URI Template Sub-TLV defined in {{uri-template-sub-tlv}}. The URI
 Template determines the MASQUE proxy endpoint and is used to construct the HTTP
 request for the corresponding CONNECT mechanism.
 
-An ALPN Sub-TLV, defined in {{alpn-sub-tlv}}, MAY be included to indicate the
-application-layer protocols supported or preferred for use when connecting to
-the MASQUE proxy.
+An SVCB Parameters Sub-TLV, defined in {{svcb-parameters-sub-tlv}}, MAY be
+included to supply connection parameters for that proxy, including supported
+application-layer protocols, an alternative port, and IP address hints.
 
 The tunnel types defined in this section identify the MASQUE mechanism used to
 carry the traffic associated with the BGP route. The NLRI to which the Tunnel
@@ -143,7 +149,8 @@ reachability information to which the MASQUE tunnel applies.
 A Tunnel Encapsulation TLV whose tunnel type is one of the MASQUE tunnel types
 defined in this document is referred to as a MASQUE Tunnel Encapsulation TLV.
 A MASQUE Tunnel Encapsulation TLV MUST contain exactly one URI Template Sub-TLV
-and MAY contain at most one ALPN Sub-TLV.
+and MAY contain at most one SVCB Parameters Sub-TLV. Support for the SVCB
+Parameters Sub-TLV is OPTIONAL.
 
 Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 
@@ -152,7 +159,7 @@ Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 | Color | 4 |
 | DS Field | 7 |
 | URI Template | TBD5 |
-| ALPN | TBD6 |
+| SVCB Parameters | TBD6 |
 {: #masque-allowed-sub-tlvs title="Sub-TLVs allowed for use with MASQUE Tunnel Encapsulation TLVs"}
 
 All other Sub-TLVs not explicitly listed above are not defined for use with
@@ -244,10 +251,11 @@ and path components. The URI Template MUST satisfy the URI Template requirements
 of the MASQUE mechanism identified by the enclosing MASQUE Tunnel Encapsulation
 TLV.
 
-The authority component of the URI Template identifies the MASQUE proxy endpoint
-to which the receiver establishes the HTTP connection. The path and query
-components of the expanded URI identify the request target used for the
-corresponding CONNECT mechanism.
+The authority component of the URI Template identifies the MASQUE proxy endpoint.
+An SVCB Parameters Sub-TLV can supply connection parameters for that endpoint
+without changing the authority used in the HTTP request or the identity used
+to authenticate the proxy. The path and query components of the expanded URI
+identify the request target used for the corresponding CONNECT mechanism.
 
 If the URI Template Value is not a syntactically valid URI Template, if it is
 not in absolute form, if it does not include non-empty scheme, authority, and
@@ -257,18 +265,23 @@ Encapsulation TLV MUST be ignored.
 
 The Tunnel Egress Endpoint Sub-TLV defined by {{BGP-TUNNEL-ENCAP-ATTR}} is not used with MASQUE
 Tunnel Encapsulation TLVs because the authority component of the URI Template
-identifies the MASQUE proxy endpoint and provides the information necessary
-to establish the corresponding HTTP connection.
+identifies the MASQUE proxy endpoint. Connection parameters can be supplied by
+the SVCB Parameters Sub-TLV.
 
-# ALPN Sub-TLV {#alpn-sub-tlv}
+# SVCB Parameters Sub-TLV {#svcb-parameters-sub-tlv}
 
-The ALPN Sub-TLV indicates the application-layer protocol or protocols that are
-supported or preferred for use with the tunnel described by the enclosing Tunnel
-Encapsulation TLV. When used with a MASQUE Tunnel Encapsulation TLV, the ALPN
-Sub-TLV identifies the HTTP version or versions that can be used to establish
-the corresponding MASQUE tunnel.
+The SVCB Parameters Sub-TLV carries connection parameters for the MASQUE proxy
+identified by the URI Template in the same MASQUE Tunnel Encapsulation TLV.
+Its value uses the SvcParams wire encoding defined in {{Section 2.2 of SVCB}}
+and the "Service Parameter Keys (SvcParamKeys)" registry defined by {{SVCB}}.
 
-The ALPN Sub-TLV has the following format:
+Only the SvcParams portion is carried. The value does not include SvcPriority,
+TargetName, a DNS resource record header, or a DNS message. The URI Template
+supplies the proxy identity, and selection among alternative tunnels remains
+subject to local policy. SVCB AliasMode and DNS alias discovery are not part of
+this Sub-TLV.
+
+The SVCB Parameters Sub-TLV has the following format:
 
 ~~~ ascii-art
   0                   1                   2                   3
@@ -276,39 +289,90 @@ The ALPN Sub-TLV has the following format:
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
  |   Type=TBD6   |           Length              |               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+               |
- ~                       ALPN ProtocolNameList                   ~
+ ~                          SvcParams                            ~
  |                                                               |
  +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 ~~~
-{: #fig-alpn-sub-tlv title="ALPN Sub-TLV"}
+{: #fig-svcb-parameters-sub-tlv title="SVCB Parameters Sub-TLV"}
 
 Type:
 : TBD6
 
 Length:
-: The length, in octets, of the ALPN ProtocolNameList field.
+: The length, in octets, of the SvcParams field, encoded as a two-octet
+  unsigned integer in network byte order.
 
-ALPN ProtocolNameList:
-: A sequence of one or more ALPN protocol identifiers, encoded as a TLS ALPN
-  `ProtocolNameList` as defined in {{Section 3.1 of ALPN}}.
+SvcParams:
+: A sequence of one or more SvcParams. Each consists of a two-octet
+  SvcParamKey, a two-octet length of the SvcParamValue, and that number of
+  value octets. The key and length are unsigned integers in network byte
+  order. Values use the wire encoding specified for their respective keys.
 
-The ALPN ProtocolNameList field contains one or more non-empty ALPN protocol
-identifiers. The order of ALPN protocol identifiers indicates preference, with
-the most preferred protocol listed first.
+The encoding and validation rules in {{Section 2.2 of SVCB}} apply to the
+SvcParams field. An empty SvcParams field is invalid; an advertiser with no
+parameters to signal omits the Sub-TLV.
 
-When the ALPN Sub-TLV is present in a MASQUE Tunnel Encapsulation TLV, the
-receiver MUST use one of the advertised ALPN protocol identifiers when
-establishing the HTTP connection to the MASQUE proxy. If none of the advertised
-protocol identifiers is supported by the receiver, the MASQUE Tunnel
-Encapsulation TLV MUST be ignored.
+## Parameter Processing
 
-A MASQUE Tunnel Encapsulation TLV MUST contain at most one ALPN Sub-TLV. If more
-than one ALPN Sub-TLV is present, the MASQUE Tunnel Encapsulation TLV MUST be
-ignored.
+The SvcParams form a single parameter set associated with the enclosing
+MASQUE Tunnel Encapsulation TLV. They need not match any SVCB or HTTPS DNS
+record, and no such DNS record needs to exist. Use of the advertised parameters
+is optional. A receiver can instead use normal connection establishment
+procedures for the URI Template. Selection between BGP-advertised parameters
+and information obtained through other mechanisms, including DNS HTTPS records,
+is a matter of local policy. Each parameter set is evaluated independently.
 
-If the ALPN Sub-TLV is malformed, including if it contains an empty
-ProtocolNameList or an empty protocol identifier, the MASQUE Tunnel
-Encapsulation TLV MUST be ignored.
+Receivers that use the parameter set MUST apply the service parameter semantics
+and compatibility rules in Sections 7 and 8 of {{SVCB}}, with the HTTPS mapping
+in {{Section 9 of SVCB}}. This includes the applicable keys, default ALPN set,
+and automatically mandatory keys defined by that mapping. Additional parameters
+applicable to HTTPS can be used according to their defining specifications.
+
+For this purpose, the URI Template identifies the service being accessed, and
+its host supplies the effective TargetName. If the host is an IP literal,
+that address is used directly and address hints are not applicable. The URI
+Template continues to determine the HTTP authority and the identity against
+which the receiver authenticates the MASQUE proxy, including when a port
+override or address hint is used.
+
+The negotiated HTTP protocol and capabilities must support the selected MASQUE
+mechanism, as required by its specification.
+
+## Error Handling
+
+If more than one SVCB Parameters Sub-TLV is present, or if its value is
+malformed, not self-consistent, or incompatible as defined by {{SVCB}}, the
+receiver MUST ignore the SVCB Parameters Sub-TLVs in that MASQUE Tunnel
+Encapsulation TLV. This does not by itself make the enclosing TLV unusable;
+the receiver can use normal connection establishment procedures for the URI
+Template. Framing errors in the enclosing BGP attribute remain subject to
+{{Section 13 of BGP-TUNNEL-ENCAP-ATTR}}.
+
+## Example
+
+A CONNECT-UDP tunnel can advertise the URI Template
+`https://proxy.example.org/masque/udp/{target_host}/{target_port}/` together with
+these SvcParams, shown in presentation format for readability:
+
+~~~
+alpn=h3,h2 no-default-alpn port=8443
+~~~
+
+The SvcParams field is the following 20 octets in hexadecimal:
+
+~~~
+00 01 00 06 02 68 33 02 68 32
+00 02 00 00
+00 03 00 02 20 fb
+~~~
+
+A receiver using this parameter set can attempt HTTP/3 over QUIC to UDP port
+8443 or HTTP/2 over TLS to TCP port 8443 of `proxy.example.org`, following the
+ALPN procedures in
+{{Section 7.1.2 of SVCB}}. The HTTP authority remains `proxy.example.org`, and
+the proxy is authenticated as `proxy.example.org`. The parameter set can be
+used even if DNS publishes different HTTPS parameters or publishes no HTTPS
+record for that name.
 
 # Use with BGP NLRI
 
@@ -359,14 +423,16 @@ MASQUE and non-MASQUE tunnel types. Selection among available tunnel types is
 determined by local policy and the procedures applicable to the associated
 AFI/SAFI.
 
-Operators should consider the stability of URI Template values when
-attaching MASQUE Tunnel Encapsulation TLVs to routes.
-Frequent changes to URI Templates, can increase route churn.
+Operators should consider the stability of URI Template and SVCB parameter
+values when attaching MASQUE Tunnel Encapsulation TLVs to routes. Frequent
+changes to these values can increase route churn. SVCB parameters advertised
+in BGP have no DNS TTL; their availability for new tunnel establishment follows
+the corresponding BGP advertisement and its replacement or withdrawal.
 Deployments that advertise the same MASQUE proxy parameters for many routes
 should consider existing BGP mechanisms and service-specific profiles that avoid
 unnecessary repetition.
 
-## URI Template Length
+## Parameter Length
 
 {{URI-TEMPLATE}} does not define a general maximum length for a URI Template.
 When a URI Template is carried in the URI Template Sub-TLV, the length of the
@@ -386,7 +452,12 @@ Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended Messages
 corresponding routes are propagated. If BGP Extended Messages are not available, URI Template
 Values MUST be kept small enough that the complete BGP UPDATE message,
 including all path attributes, NLRI, and protocol overhead, does not exceed
-4096 octets.
+4096 octets. These size considerations also apply to SVCB Parameters Sub-TLVs.
+Advertisers MUST account for their combined size with the URI Template and all
+other contents of the UPDATE, even when each Sub-TLV fits its own Length field.
+If an SVCB Parameters Sub-TLV exceeds a receiver's supported or configured
+limit, the receiver SHOULD ignore that Sub-TLV. A truncated parameter set
+MUST NOT be used.
 
 If the URI Template Value exceeds the receiver's supported or configured
 limit, the receiver SHOULD ignore the enclosing MASQUE Tunnel Encapsulation TLV.
@@ -402,7 +473,8 @@ not reaching the intended recipients.
 
 The security considerations of {{BGP-TUNNEL-ENCAP-ATTR}}, {{CONNECT-UDP}},
 {{CONNECT-IP}}, {{CONNECT-TCP}}, {{CONNECT-ETHERNET}}, {{URI-TEMPLATE}}, and
-{{ALPN}} apply.
+{{ALPN}} apply. The security considerations for service parameters in
+{{SVCB}} also apply; carrying them in BGP does not provide DNSSEC validation.
 
 This document defines BGP signaling for MASQUE tunnel encapsulation parameters.
 It does not define a new authentication or authorization mechanism for MASQUE
@@ -436,11 +508,17 @@ Implementations MUST NOT expand or use a URI Template in a way that creates a
 request target outside the scope intended by the received route and local
 policy.
 
-The ALPN Sub-TLV can constrain the application-layer protocols used to establish
-a MASQUE tunnel. If an ALPN Sub-TLV is present, receivers MUST use only one of
-the advertised ALPN protocol identifiers for the corresponding tunnel. Ignoring
-an ALPN constraint could cause a receiver to use an HTTP version or transport
-that the advertising speaker did not intend to support for that tunnel.
+The SVCB Parameters Sub-TLV can change the transport protocol, destination
+port, and candidate addresses used to establish a MASQUE tunnel. Receivers
+MUST apply local connection policy to the resulting endpoint and MUST validate
+the proxy identity determined by the URI Template. BGP-supplied parameters
+MUST NOT be treated as proof of that identity or as a reason to bypass TLS
+certificate validation. Both URI Templates and SVCB parameters can expose
+internal service configuration and topology.
+
+Because use of the SVCB Parameters Sub-TLV is optional, advertisers cannot
+rely on it to enforce connection policy. Such policy must be enforced by the
+MASQUE endpoints and their local configuration.
 
 # IANA Considerations
 
@@ -468,7 +546,7 @@ Encapsulation Attribute Sub-TLVs" registry:
 | Value | Description | Reference |
 |---:|---|---|
 | TBD5 | URI Template | this document |
-| TBD6 | ALPN | this document |
+| TBD6 | SVCB Parameters | this document |
 {: #masque-tunnel-subtlvs title="MASQUE BGP Tunnel Encapsulation Attribute Sub-TLVs"}
 
 --- back
