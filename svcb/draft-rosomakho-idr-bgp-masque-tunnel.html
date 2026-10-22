@@ -28,11 +28,11 @@ parameters used to establish the corresponding MASQUE tunnel.
     Jinja2 3.1.6
     lxml 6.1.1
     natsort 8.4.0
-    platformdirs 4.12.2
+    platformdirs 4.13.4
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.33.1
-    wcwidth 0.9.1
+    wcwidth 0.9.2
 -->
 <link href="draft-rosomakho-idr-bgp-masque-tunnel.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1052,7 +1052,7 @@ svg {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Rosomakho &amp; Retana</td>
-<td class="center">Expires 10 April 2027</td>
+<td class="center">Expires 25 April 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1065,12 +1065,12 @@ svg {
 <dd class="internet-draft">draft-rosomakho-idr-bgp-masque-tunnel-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-10-07" class="published">7 October 2026</time>
+<time datetime="2026-10-22" class="published">22 October 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2027-04-10">10 April 2027</time></dd>
+<dd class="expires"><time datetime="2027-04-25">25 April 2027</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1128,7 +1128,7 @@ parameters used to establish the corresponding MASQUE tunnel.<a href="#section-a
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 10 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 25 April 2027.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1187,13 +1187,16 @@ parameters used to establish the corresponding MASQUE tunnel.<a href="#section-a
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-svcb-parameters-sub-tlv" class="internal xref">SVCB Parameters Sub-TLV</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-parameter-processing" class="internal xref">Parameter Processing</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-endpoint-validation" class="internal xref">Endpoint Validation</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-error-handling" class="internal xref">Error Handling</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-use-of-connection-parameter" class="internal xref">Use of Connection Parameters</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-example" class="internal xref">Example</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-error-handling" class="internal xref">Error Handling</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-example" class="internal xref">Example</a></p>
 </li>
             </ul>
 </li>
@@ -1272,10 +1275,9 @@ Encapsulation Attribute. The URI Template identifies the MASQUE proxy endpoint
 and provides the template used to construct the HTTP request target for the
 corresponding CONNECT request. This document also defines an SVCB Parameters
 Sub-TLV that reuses the service parameter encoding and registry of SVCB and
-HTTPS resource records <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>. It carries ALPN identifiers and other
-connection parameters as a single parameter set. These parameters are
-advertised through BGP and need not correspond to a DNS resource record
-published for the MASQUE proxy.<a href="#section-1-4" class="pilcrow">¶</a></p>
+HTTPS resource records <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>. It carries IP address hints for
+validation of the advertised proxy endpoint without a DNS lookup, together
+with ALPN identifiers and other connection parameters.<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">This document does not define new BGP NLRI, does not define a new MASQUE
 protocol mechanism, and does not define a new proxy authentication or
 authorization mechanism. The NLRI to which the Tunnel Encapsulation Attribute is
@@ -1340,9 +1342,10 @@ document identifies a MASQUE proxy and the corresponding HTTP request target
 using the URI Template Sub-TLV defined in <a href="#uri-template-sub-tlv" class="auto internal xref">Section 4</a>. The URI
 Template determines the MASQUE proxy endpoint and is used to construct the HTTP
 request for the corresponding CONNECT mechanism.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">An SVCB Parameters Sub-TLV, defined in <a href="#svcb-parameters-sub-tlv" class="auto internal xref">Section 5</a>, <span class="bcp14">MAY</span> be
-included to supply connection parameters for that proxy, including supported
-application-layer protocols, an alternative port, and IP address hints.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">The SVCB Parameters Sub-TLV, defined in <a href="#svcb-parameters-sub-tlv" class="auto internal xref">Section 5</a>, supplies
+IP address hints for BGP validation of the proxy endpoint and can also carry
+connection parameters such as supported application-layer protocols and an
+alternative port.<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">The tunnel types defined in this section identify the MASQUE mechanism used to
 carry the traffic associated with the BGP route. The NLRI to which the Tunnel
 Encapsulation Attribute is attached determines the traffic, service, or
@@ -1350,8 +1353,11 @@ reachability information to which the MASQUE tunnel applies.<a href="#section-3-
 <p id="section-3-4">A Tunnel Encapsulation TLV whose tunnel type is one of the MASQUE tunnel types
 defined in this document is referred to as a MASQUE Tunnel Encapsulation TLV.
 A MASQUE Tunnel Encapsulation TLV <span class="bcp14">MUST</span> contain exactly one URI Template Sub-TLV
-and <span class="bcp14">MAY</span> contain at most one SVCB Parameters Sub-TLV. Support for the SVCB
-Parameters Sub-TLV is <span class="bcp14">OPTIONAL</span>.<a href="#section-3-4" class="pilcrow">¶</a></p>
+and <span class="bcp14">MUST NOT</span> contain more than one SVCB Parameters Sub-TLV. Unless the host
+component of the URI Template is an IPv4 or IPv6 address literal, the TLV <span class="bcp14">MUST</span>
+contain exactly one SVCB Parameters Sub-TLV containing at least one address
+in <code>ipv4hint</code>, <code>ipv6hint</code>, or both. If the host is such an address literal,
+the SVCB Parameters Sub-TLV <span class="bcp14">MAY</span> be omitted.<a href="#section-3-4" class="pilcrow">¶</a></p>
 <p id="section-3-5">Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:<a href="#section-3-5" class="pilcrow">¶</a></p>
 <span id="name-sub-tlvs-allowed-for-use-wi"></span><div id="masque-allowed-sub-tlvs">
 <table class="center" id="table-1">
@@ -1389,9 +1395,8 @@ Parameters Sub-TLV is <span class="bcp14">OPTIONAL</span>.<a href="#section-3-4"
 MASQUE Tunnel Encapsulation TLVs. Receivers <span class="bcp14">MUST</span> ignore these Sub-TLVs when
 validating MASQUE-specific semantics. Future specifications <span class="bcp14">MAY</span> define
 additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.<a href="#section-3-7" class="pilcrow">¶</a></p>
-<p id="section-3-8">If a MASQUE Tunnel Encapsulation TLV contains no
-URI Template Sub-TLV, or contains more than one URI Template Sub-TLV,
-it <span class="bcp14">MUST</span> be ignored.<a href="#section-3-8" class="pilcrow">¶</a></p>
+<p id="section-3-8">A MASQUE Tunnel Encapsulation TLV that does not meet these requirements <span class="bcp14">MUST</span>
+be handled as specified in <a href="#masque-error-handling" class="auto internal xref">Section 5.3</a>.<a href="#section-3-8" class="pilcrow">¶</a></p>
 <div id="connect-tcp-tunnel-type">
 <section id="section-3.1">
         <h3 id="name-connect-tcp-tunnel-type">
@@ -1525,11 +1530,12 @@ identify the request target used for the corresponding CONNECT mechanism.<a href
 not in absolute form, if it does not include non-empty scheme, authority, and
 path components, or if it is otherwise not usable with the MASQUE mechanism
 identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
-Encapsulation TLV <span class="bcp14">MUST</span> be ignored.<a href="#section-4-7" class="pilcrow">¶</a></p>
-<p id="section-4-8">The Tunnel Egress Endpoint Sub-TLV defined by <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span> is not used with MASQUE
-Tunnel Encapsulation TLVs because the authority component of the URI Template
-identifies the MASQUE proxy endpoint. Connection parameters can be supplied by
-the SVCB Parameters Sub-TLV.<a href="#section-4-8" class="pilcrow">¶</a></p>
+Encapsulation TLV <span class="bcp14">MUST</span> be handled as specified in <a href="#masque-error-handling" class="auto internal xref">Section 5.3</a>.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">For the MASQUE tunnel types defined in this document, the endpoint address
+requirements in <a href="#masque-tunnel-encapsulation" class="auto internal xref">Section 3</a> replace the requirement for a Tunnel
+Egress Endpoint Sub-TLV in <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>. The address is supplied
+by the URI Template when its host is an IPv4 or IPv6 address literal, or by
+the IP address hints in the SVCB Parameters Sub-TLV otherwise.<a href="#section-4-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="svcb-parameters-sub-tlv">
@@ -1539,17 +1545,13 @@ the SVCB Parameters Sub-TLV.<a href="#section-4-8" class="pilcrow">¶</a></p>
       </h2>
 <p id="section-5-1">The SVCB Parameters Sub-TLV carries connection parameters for the MASQUE proxy
 identified by the URI Template in the same MASQUE Tunnel Encapsulation TLV.
-Its value uses the SvcParams wire encoding defined in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.2" class="relref">Section 2.2</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span>
-and the "Service Parameter Keys (SvcParamKeys)" registry defined by <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<p id="section-5-2">Only the SvcParams portion is carried. The value does not include SvcPriority,
-TargetName, a DNS resource record header, or a DNS message. The URI Template
-supplies the proxy identity, and selection among alternative tunnels remains
-subject to local policy. SVCB AliasMode and DNS alias discovery are not part of
-this Sub-TLV.<a href="#section-5-2" class="pilcrow">¶</a></p>
-<p id="section-5-3">The SVCB Parameters Sub-TLV has the following format:<a href="#section-5-3" class="pilcrow">¶</a></p>
+The Sub-TLV Value contains the SvcParams sequence encoded as specified in
+<span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.2" class="relref">Section 2.2</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span>, using the "Service Parameter Keys (SvcParamKeys)"
+registry defined by <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">The SVCB Parameters Sub-TLV has the following format:<a href="#section-5-2" class="pilcrow">¶</a></p>
 <span id="name-svcb-parameters-sub-tlv-2"></span><div id="fig-svcb-parameters-sub-tlv">
 <figure id="figure-2">
-        <div class="alignLeft art-ascii-art art-text artwork" id="section-5-4.1">
+        <div class="alignLeft art-ascii-art art-text artwork" id="section-5-3.1">
 <pre>
   0                   1                   2                   3
   0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -1565,99 +1567,126 @@ this Sub-TLV.<a href="#section-5-2" class="pilcrow">¶</a></p>
 <a href="#name-svcb-parameters-sub-tlv-2" class="selfRef">SVCB Parameters Sub-TLV</a>
         </figcaption></figure>
 </div>
-<span class="break"></span><dl class="dlParallel" id="section-5-5">
-        <dt id="section-5-5.1">Type:</dt>
-        <dd style="margin-left: 1.5em" id="section-5-5.2">
-          <p id="section-5-5.2.1">TBD6<a href="#section-5-5.2.1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-5-4">
+        <dt id="section-5-4.1">Type:</dt>
+        <dd style="margin-left: 1.5em" id="section-5-4.2">
+          <p id="section-5-4.2.1">TBD6<a href="#section-5-4.2.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-5-5.3">Length:</dt>
-        <dd style="margin-left: 1.5em" id="section-5-5.4">
-          <p id="section-5-5.4.1">The length, in octets, of the SvcParams field, encoded as a two-octet
-unsigned integer in network byte order.<a href="#section-5-5.4.1" class="pilcrow">¶</a></p>
+<dt id="section-5-4.3">Length:</dt>
+        <dd style="margin-left: 1.5em" id="section-5-4.4">
+          <p id="section-5-4.4.1">The length, in octets, of the SvcParams field, encoded as a two-octet
+unsigned integer in network byte order.<a href="#section-5-4.4.1" class="pilcrow">¶</a></p>
 </dd>
         <dd class="break"></dd>
-<dt id="section-5-5.5">SvcParams:</dt>
-        <dd style="margin-left: 1.5em" id="section-5-5.6">
-          <p id="section-5-5.6.1">A sequence of one or more SvcParams. Each consists of a two-octet
+<dt id="section-5-4.5">SvcParams:</dt>
+        <dd style="margin-left: 1.5em" id="section-5-4.6">
+          <p id="section-5-4.6.1">A sequence of one or more SvcParams. Each consists of a two-octet
 SvcParamKey, a two-octet length of the SvcParamValue, and that number of
 value octets. The key and length are unsigned integers in network byte
-order. Values use the wire encoding specified for their respective keys.<a href="#section-5-5.6.1" class="pilcrow">¶</a></p>
+order. Values use the wire encoding specified for their respective keys.<a href="#section-5-4.6.1" class="pilcrow">¶</a></p>
 </dd>
       <dd class="break"></dd>
 </dl>
-<p id="section-5-6">The encoding and validation rules in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-2.2" class="relref">Section 2.2</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span> apply to the
-SvcParams field. An empty SvcParams field is invalid; an advertiser with no
-parameters to signal omits the Sub-TLV.<a href="#section-5-6" class="pilcrow">¶</a></p>
-<div id="parameter-processing">
+<p id="section-5-5">The encoding and self-consistency rules of <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span> apply to the SvcParams
+field. An empty SvcParams field is invalid.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<div id="endpoint-validation">
 <section id="section-5.1">
-        <h3 id="name-parameter-processing">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-parameter-processing" class="section-name selfRef">Parameter Processing</a>
+        <h3 id="name-endpoint-validation">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-endpoint-validation" class="section-name selfRef">Endpoint Validation</a>
         </h3>
-<p id="section-5.1-1">The SvcParams form a single parameter set associated with the enclosing
-MASQUE Tunnel Encapsulation TLV. They need not match any SVCB or HTTPS DNS
-record, and no such DNS record needs to exist. Use of the advertised parameters
-is optional. A receiver can instead use normal connection establishment
-procedures for the URI Template. Selection between BGP-advertised parameters
-and information obtained through other mechanisms, including DNS HTTPS records,
-is a matter of local policy. Each parameter set is evaluated independently.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
-<p id="section-5.1-2">Receivers that use the parameter set <span class="bcp14">MUST</span> apply the service parameter semantics
-and compatibility rules in Sections 7 and 8 of <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>, with the HTTPS mapping
-in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-9" class="relref">Section 9</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span>. This includes the applicable keys, default ALPN set,
-and automatically mandatory keys defined by that mapping. Additional parameters
-applicable to HTTPS can be used according to their defining specifications.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">For this purpose, the URI Template identifies the service being accessed, and
-its host supplies the effective TargetName. If the host is an IP literal,
-that address is used directly and address hints are not applicable. The URI
-Template continues to determine the HTTP authority and the identity against
-which the receiver authenticates the MASQUE proxy, including when a port
-override or address hint is used.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
-<p id="section-5.1-4">The negotiated HTTP protocol and capabilities must support the selected MASQUE
-mechanism, as required by its specification.<a href="#section-5.1-4" class="pilcrow">¶</a></p>
+<p id="section-5.1-1">The URI Template's address literal and any addresses in <code>ipv4hint</code> or
+<code>ipv6hint</code> provide endpoint address information that can be validated without
+a DNS lookup. The address validity rules in
+<span><a href="https://rfc-editor.org/rfc/rfc9012#section-3.1" class="relref">Section 3.1</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span> apply to these addresses, including its
+configuration exceptions and treatment of valid but unreachable addresses.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">A receiver <span class="bcp14">MAY</span> apply the procedure in
+<span><a href="https://rfc-editor.org/rfc/rfc9012#section-3.1.1" class="relref">Section 3.1.1</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span> to check whether these addresses
+belong to the AS that originated the route. Support for and use of this
+procedure are <span class="bcp14">OPTIONAL</span>. When used, its configuration and revalidation rules
+apply. An address found invalid is handled as specified in
+<a href="#masque-error-handling" class="auto internal xref">Section 5.3</a>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">Validation of BGP parameters is independent of the receiving speaker's ability
+to establish a MASQUE tunnel. Lack of support for a connection parameter or
+an advertised application-layer protocol does not, by itself, invalidate the
+BGP advertisement.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="error-handling">
+<div id="use-of-connection-parameters">
 <section id="section-5.2">
-        <h3 id="name-error-handling">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-error-handling" class="section-name selfRef">Error Handling</a>
+        <h3 id="name-use-of-connection-parameter">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-use-of-connection-parameter" class="section-name selfRef">Use of Connection Parameters</a>
         </h3>
-<p id="section-5.2-1">If more than one SVCB Parameters Sub-TLV is present, or if its value is
-malformed, not self-consistent, or incompatible as defined by <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>, the
-receiver <span class="bcp14">MUST</span> ignore the SVCB Parameters Sub-TLVs in that MASQUE Tunnel
-Encapsulation TLV. This does not by itself make the enclosing TLV unusable;
-the receiver can use normal connection establishment procedures for the URI
-Template. Framing errors in the enclosing BGP attribute remain subject to
-<span><a href="https://rfc-editor.org/rfc/rfc9012#section-13" class="relref">Section 13</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-1">Service parameter semantics and compatibility are defined in Sections 7 and 8
+of <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>, with the HTTPS mapping in <span><a href="https://rfc-editor.org/rfc/rfc9460#section-9" class="relref">Section 9</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span>. The URI Template
+identifies the service being accessed, and its host supplies the effective
+TargetName. For an IPv4 or IPv6 address literal, that address is used directly.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">The address information required for BGP validation does not constrain the
+addresses used for connection establishment. <span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.3" class="relref">Section 7.3</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span> describes
+the use of address hints and the preference for addresses obtained from A and
+AAAA records. Procedures for establishing the MASQUE tunnel, including address
+resolution and protocol negotiation, are outside the scope of this document
+and follow the applicable HTTP and MASQUE specifications.<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="masque-error-handling">
+<section id="section-5.3">
+        <h3 id="name-error-handling">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-error-handling" class="section-name selfRef">Error Handling</a>
+        </h3>
+<p id="section-5.3-1">A MASQUE Tunnel Encapsulation TLV is invalid if it does not contain exactly one
+URI Template Sub-TLV with a valid value, contains more than one SVCB Parameters
+Sub-TLV, or contains an SVCB Parameters Sub-TLV whose value is malformed or
+not self-consistent. It is also invalid if it lacks the address information
+required by <a href="#masque-tunnel-encapsulation" class="auto internal xref">Section 3</a> or any advertised endpoint address
+is found invalid under <a href="#endpoint-validation" class="auto internal xref">Section 5.1</a>. The optional AS-ownership
+procedure can cause rejection only when it is applied.
+Unknown SvcParamKeys do not by themselves make a Sub-TLV malformed; their
+connection-establishment semantics are handled according to <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span>.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">An invalid MASQUE Tunnel Encapsulation TLV <span class="bcp14">MUST</span> be treated as a TLV containing
+a malformed Tunnel Egress Endpoint Sub-TLV under
+<span><a href="https://rfc-editor.org/rfc/rfc9012#section-13" class="relref">Section 13</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>: the entire TLV <span class="bcp14">MUST</span> be ignored and
+removed from the attribute before propagation. The receiver <span class="bcp14">MUST NOT</span> retain
+such a TLV by discarding only the SVCB Parameters Sub-TLV or an invalid hint
+address. The remaining validation and error-handling rules of that section
+apply, including treat-as-withdraw if no valid TLVs remain and the handling of
+framing errors in the enclosing attribute.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="example">
-<section id="section-5.3">
+<section id="section-5.4">
         <h3 id="name-example">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-example" class="section-name selfRef">Example</a>
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-example" class="section-name selfRef">Example</a>
         </h3>
-<p id="section-5.3-1">A CONNECT-UDP tunnel can advertise the URI Template
+<p id="section-5.4-1">A CONNECT-UDP tunnel can advertise the URI Template
 <code>https://proxy.example.org/masque/udp/{target_host}/{target_port}/</code> together with
-these SvcParams, shown in presentation format for readability:<a href="#section-5.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.3-2">
+these SvcParams, shown in presentation format for readability:<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4-2">
 <pre>
 alpn=h3,h2 no-default-alpn port=8443
-</pre><a href="#section-5.3-2" class="pilcrow">¶</a>
+ipv4hint=192.0.2.1 ipv6hint=2001:db8::1
+</pre><a href="#section-5.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3-3">The SvcParams field is the following 20 octets in hexadecimal:<a href="#section-5.3-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-5.3-4">
+<p id="section-5.4-3">The SvcParams field is the following 48 octets in hexadecimal:<a href="#section-5.4-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5.4-4">
 <pre>
 00 01 00 06 02 68 33 02 68 32
 00 02 00 00
 00 03 00 02 20 fb
-</pre><a href="#section-5.3-4" class="pilcrow">¶</a>
+00 04 00 04 c0 00 02 01
+00 06 00 10 20 01 0d b8 00 00 00 00 00 00 00 00 00 00 00 01
+</pre><a href="#section-5.4-4" class="pilcrow">¶</a>
 </div>
-<p id="section-5.3-5">A receiver using this parameter set can attempt HTTP/3 over QUIC to UDP port
-8443 or HTTP/2 over TLS to TCP port 8443 of <code>proxy.example.org</code>, following the
-ALPN procedures in
-<span><a href="https://rfc-editor.org/rfc/rfc9460#section-7.1.2" class="relref">Section 7.1.2</a> of [<a href="#SVCB" class="cite xref">SVCB</a>]</span>. The HTTP authority remains <code>proxy.example.org</code>, and
-the proxy is authenticated as <code>proxy.example.org</code>. The parameter set can be
-used even if DNS publishes different HTTPS parameters or publishes no HTTPS
-record for that name.<a href="#section-5.3-5" class="pilcrow">¶</a></p>
+<p id="section-5.4-5">Both hint addresses are available for validation as described in
+<a href="#endpoint-validation" class="auto internal xref">Section 5.1</a>. These documentation addresses illustrate the encoding;
+a deployment uses actual proxy addresses.<a href="#section-5.4-5" class="pilcrow">¶</a></p>
+<p id="section-5.4-6">The connection parameters advertise HTTP/3 over QUIC to UDP port 8443 and
+HTTP/2 over TLS to TCP port 8443 of <code>proxy.example.org</code>. Address selection
+follows the applicable connection-establishment procedures. The HTTP authority
+and authenticated proxy identity remain <code>proxy.example.org</code>.<a href="#section-5.4-6" class="pilcrow">¶</a></p>
+<p id="section-5.4-7">If the URI Template instead uses an IPv4 or IPv6 address literal as its host,
+the literal supplies the address for BGP validation and the SVCB Parameters
+Sub-TLV can be omitted.<a href="#section-5.4-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1706,8 +1735,9 @@ structure, or internal topology. Operators <span class="bcp14">MUST</span> apply
 policy to avoid leaking MASQUE tunnel encapsulation information outside the
 intended administrative scope.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">Multiple MASQUE tunnel candidates can be advertised by including multiple Tunnel
-Encapsulation TLVs, each containing a single URI Template Sub-TLV. This can be
-used to advertise alternative MASQUE proxies. Selection among available tunnel
+Encapsulation TLVs, each containing a single URI Template Sub-TLV and the
+address information required by <a href="#masque-tunnel-encapsulation" class="auto internal xref">Section 3</a>. This can be used to
+advertise alternative MASQUE proxies. Selection among available tunnel
 candidates is left to local policy and outside the scope of this specification.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <p id="section-7-4">A BGP Tunnel Encapsulation Attribute <span class="bcp14">MAY</span> contain both MASQUE Tunnel Encapsulation
 TLVs and Tunnel Encapsulation TLVs of other tunnel types defined by <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span> or
@@ -1717,9 +1747,7 @@ determined by local policy and the procedures applicable to the associated
 AFI/SAFI.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <p id="section-7-5">Operators should consider the stability of URI Template and SVCB parameter
 values when attaching MASQUE Tunnel Encapsulation TLVs to routes. Frequent
-changes to these values can increase route churn. SVCB parameters advertised
-in BGP have no DNS TTL; their availability for new tunnel establishment follows
-the corresponding BGP advertisement and its replacement or withdrawal.
+changes to these values can increase route churn.
 Deployments that advertise the same MASQUE proxy parameters for many routes
 should consider existing BGP mechanisms and service-specific profiles that avoid
 unnecessary repetition.<a href="#section-7-5" class="pilcrow">¶</a></p>
@@ -1747,8 +1775,9 @@ including all path attributes, NLRI, and protocol overhead, does not exceed
 Advertisers <span class="bcp14">MUST</span> account for their combined size with the URI Template and all
 other contents of the UPDATE, even when each Sub-TLV fits its own Length field.
 If an SVCB Parameters Sub-TLV exceeds a receiver's supported or configured
-limit, the receiver <span class="bcp14">SHOULD</span> ignore that Sub-TLV. A truncated parameter set
-<span class="bcp14">MUST NOT</span> be used.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
+limit, the receiver <span class="bcp14">SHOULD</span> ignore the enclosing MASQUE Tunnel Encapsulation
+TLV. A truncated parameter set <span class="bcp14">MUST NOT</span> be used, and the receiver <span class="bcp14">MUST NOT</span>
+bypass the endpoint validation requirements by discarding the Sub-TLV.<a href="#section-7.1-4" class="pilcrow">¶</a></p>
 <p id="section-7.1-5">If the URI Template Value exceeds the receiver's supported or configured
 limit, the receiver <span class="bcp14">SHOULD</span> ignore the enclosing MASQUE Tunnel Encapsulation TLV.<a href="#section-7.1-5" class="pilcrow">¶</a></p>
 <p id="section-7.1-6">If the length of the URI Template results in the BGP UPDATE exceeding the
@@ -1760,9 +1789,8 @@ as it is eligible under the "attribute discard" approach of
 not reaching the intended recipients.
 # Security Considerations<a href="#section-7.1-6" class="pilcrow">¶</a></p>
 <p id="section-7.1-7">The security considerations of <span>[<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>, <span>[<a href="#CONNECT-UDP" class="cite xref">CONNECT-UDP</a>]</span>,
-<span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span>, <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span>, <span>[<a href="#CONNECT-ETHERNET" class="cite xref">CONNECT-ETHERNET</a>]</span>, <span>[<a href="#URI-TEMPLATE" class="cite xref">URI-TEMPLATE</a>]</span>, and
-<span>[<a href="#ALPN" class="cite xref">ALPN</a>]</span> apply. The security considerations for service parameters in
-<span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span> also apply; carrying them in BGP does not provide DNSSEC validation.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
+<span>[<a href="#CONNECT-IP" class="cite xref">CONNECT-IP</a>]</span>, <span>[<a href="#CONNECT-TCP" class="cite xref">CONNECT-TCP</a>]</span>, <span>[<a href="#CONNECT-ETHERNET" class="cite xref">CONNECT-ETHERNET</a>]</span>, <span>[<a href="#URI-TEMPLATE" class="cite xref">URI-TEMPLATE</a>]</span>,
+<span>[<a href="#ALPN" class="cite xref">ALPN</a>]</span>, and <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span> apply.<a href="#section-7.1-7" class="pilcrow">¶</a></p>
 <p id="section-7.1-8">This document defines BGP signaling for MASQUE tunnel encapsulation parameters.
 It does not define a new authentication or authorization mechanism for MASQUE
 proxies, and it does not change the security properties of the MASQUE
@@ -1797,9 +1825,10 @@ the proxy identity determined by the URI Template. BGP-supplied parameters
 <span class="bcp14">MUST NOT</span> be treated as proof of that identity or as a reason to bypass TLS
 certificate validation. Both URI Templates and SVCB parameters can expose
 internal service configuration and topology.<a href="#section-7.1-13" class="pilcrow">¶</a></p>
-<p id="section-7.1-14">Because use of the SVCB Parameters Sub-TLV is optional, advertisers cannot
-rely on it to enforce connection policy. Such policy must be enforced by the
-MASQUE endpoints and their local configuration.<a href="#section-7.1-14" class="pilcrow">¶</a></p>
+<p id="section-7.1-14">Endpoint address validation, when performed, checks the addresses carried
+in BGP. It does not validate a different address subsequently obtained through
+DNS or authenticate the MASQUE proxy. Connection policy and
+proxy authentication remain the responsibility of the MASQUE endpoints.<a href="#section-7.1-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1916,7 +1945,7 @@ Encapsulation Attribute Sub-TLVs" registry:<a href="#section-8.2-1" class="pilcr
 <dd class="break"></dd>
 <dt id="CONNECT-ETHERNET">[CONNECT-ETHERNET]</dt>
         <dd>
-<span class="refAuthor">Sedeño, A.</span>, <span class="refTitle">"Proxying Ethernet Frames in HTTP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-masque-connect-ethernet-15</span>, <time datetime="2026-09-30" class="refDate">30 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-masque-connect-ethernet-15">https://datatracker.ietf.org/doc/html/draft-ietf-masque-connect-ethernet-15</a>&gt;</span>. </dd>
+<span class="refAuthor">Sedeño, A.</span>, <span class="refTitle">"Proxying Ethernet Frames in HTTP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-masque-connect-ethernet-18</span>, <time datetime="2026-10-16" class="refDate">16 October 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-masque-connect-ethernet-18">https://datatracker.ietf.org/doc/html/draft-ietf-masque-connect-ethernet-18</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CONNECT-IP">[CONNECT-IP]</dt>
         <dd>
@@ -1924,7 +1953,7 @@ Encapsulation Attribute Sub-TLVs" registry:<a href="#section-8.2-1" class="pilcr
 <dd class="break"></dd>
 <dt id="CONNECT-TCP">[CONNECT-TCP]</dt>
         <dd>
-<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Template-Driven HTTP CONNECT Proxying for TCP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-connect-tcp-14</span>, <time datetime="2026-09-17" class="refDate">17 September 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-14">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-14</a>&gt;</span>. </dd>
+<span class="refAuthor">Schwartz, B. M.</span>, <span class="refTitle">"Template-Driven HTTP CONNECT Proxying for TCP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-httpbis-connect-tcp-16</span>, <time datetime="2026-10-16" class="refDate">16 October 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-16">https://datatracker.ietf.org/doc/html/draft-ietf-httpbis-connect-tcp-16</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="CONNECT-UDP">[CONNECT-UDP]</dt>
         <dd>
