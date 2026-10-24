@@ -171,8 +171,6 @@ MASQUE Tunnel Encapsulation TLVs. Receivers MUST ignore these Sub-TLVs when
 validating MASQUE-specific semantics. Future specifications MAY define
 additional Sub-TLVs for use with MASQUE Tunnel Encapsulation TLVs.
 
-A MASQUE Tunnel Encapsulation TLV that does not meet these requirements MUST
-be handled as specified in {{masque-error-handling}}.
 
 ## CONNECT-TCP Tunnel Type
 
