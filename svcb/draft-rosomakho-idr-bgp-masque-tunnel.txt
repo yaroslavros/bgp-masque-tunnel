@@ -232,9 +232,6 @@ Table of Contents
    specifications MAY define additional Sub-TLVs for use with MASQUE
    Tunnel Encapsulation TLVs.
 
-   A MASQUE Tunnel Encapsulation TLV that does not meet these
-   requirements MUST be handled as specified in Section 5.3.
-
 3.1.  CONNECT-TCP Tunnel Type
 
    The CONNECT-TCP Tunnel Type indicates that traffic associated with
