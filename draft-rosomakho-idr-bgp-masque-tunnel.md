@@ -296,8 +296,7 @@ Type:
 : TBD6
 
 Length:
-: The length, in octets, of the SvcParams field, encoded as a two-octet
-  unsigned integer in network byte order.
+: The length, in octets, of the SvcParams field.
 
 SvcParams:
 : A sequence of one or more SvcParams. Each consists of a two-octet
