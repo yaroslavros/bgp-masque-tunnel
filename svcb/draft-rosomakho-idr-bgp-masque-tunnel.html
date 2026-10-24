@@ -1601,9 +1601,14 @@ a DNS lookup. The address validity rules in
 configuration exceptions and treatment of valid but unreachable addresses.<a href="#section-5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1-2">A receiver <span class="bcp14">MAY</span> apply the procedure in
 <span><a href="https://rfc-editor.org/rfc/rfc9012#section-3.1.1" class="relref">Section 3.1.1</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span> to check whether these addresses
-belong to the AS that originated the route. Support for and use of this
-procedure are <span class="bcp14">OPTIONAL</span>. When used, its configuration and revalidation rules
-apply. An address found invalid is handled as specified in
+belong to the AS that originated the route.
+When used, its configuration and revalidation rules
+apply. If present, the URI Template's address literal
+<span class="bcp14">MUST</span> be the address used for validation, and any
+addresses in ipv4hint or ipv6hint <span class="bcp14">SHOULD</span> be ignored. The selection of which IP address hints should be
+validated, if any, is left to the implementation. The
+validation of more than one address is out of scope for this document.
+An address found invalid is handled as specified in
 <a href="#masque-error-handling" class="auto internal xref">Section 5.3</a>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <p id="section-5.1-3">Validation of BGP parameters is independent of the receiving speaker's ability
 to establish a MASQUE tunnel. Lack of support for a connection parameter or
