@@ -155,6 +155,7 @@ contain exactly one SVCB Parameters Sub-TLV containing at least one address
 in `ipv4hint`, `ipv6hint`, or both. If the host is such an address literal,
 the SVCB Parameters Sub-TLV MAY be omitted.
 
+A MASQUE Tunnel Encapsulation TLV that does not meet these requirements MUST be handled as specified in {{masque-error-handling}}.
 Only the following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation TLVs:
 
 | Sub-TLV | Code |
