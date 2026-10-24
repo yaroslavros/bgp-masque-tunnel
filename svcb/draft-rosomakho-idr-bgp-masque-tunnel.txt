@@ -357,6 +357,11 @@ Table of Contents
    The encoding and self-consistency rules of [SVCB] apply to the
    SvcParams field.  An empty SvcParams field is invalid.
 
+   Validation of BGP parameters is independent of the receiving
+   speaker's ability to establish a MASQUE tunnel.  Lack of support for
+   a connection parameter or an advertised application-layer protocol
+   does not, by itself, invalidate the BGP advertisement.
+
 5.1.  Endpoint Validation
 
    The URI Template's address literal and any addresses in ipv4hint or
@@ -376,11 +381,6 @@ Table of Contents
    implementation.  The validation of more than one address is out of
    scope for this document.  An address found invalid is handled as
    specified in Section 5.3.
-
-   Validation of BGP parameters is independent of the receiving
-   speaker's ability to establish a MASQUE tunnel.  Lack of support for
-   a connection parameter or an advertised application-layer protocol
-   does not, by itself, invalidate the BGP advertisement.
 
 5.2.  Use of Connection Parameters
 
@@ -417,9 +417,9 @@ Table of Contents
    and removed from the attribute before propagation.  The receiver MUST
    NOT retain such a TLV by discarding only the SVCB Parameters Sub-TLV
    or an invalid hint address.  The remaining validation and error-
-   handling rules of that section apply, including treat-as-withdraw if
-   no valid TLVs remain and the handling of framing errors in the
-   enclosing attribute.
+   handling rules of Section 13 of [BGP-TUNNEL-ENCAP-ATTR] apply,
+   including treat-as-withdraw if no valid TLVs remain and the handling
+   of framing errors in the enclosing attribute.
 
 5.4.  Example
 
@@ -535,19 +535,19 @@ Table of Contents
    URI Template Values SHOULD NOT exceed 1024 octets and should be kept
    as short as practical.
 
-   Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended
-   Messages [BGP-EXTENDED-MESSAGES] on the BGP sessions over which the
-   corresponding routes are propagated.  If BGP Extended Messages are
-   not available, URI Template Values MUST be kept small enough that the
-   complete BGP UPDATE message, including all path attributes, NLRI, and
-   protocol overhead, does not exceed 4096 octets.  These size
-   considerations also apply to SVCB Parameters Sub-TLVs.  Advertisers
-   MUST account for their combined size with the URI Template and all
-   other contents of the UPDATE, even when each Sub-TLV fits its own
-   Length field.  If an SVCB Parameters Sub-TLV exceeds a receiver's
-   supported or configured limit, the receiver SHOULD ignore the
-   enclosing MASQUE Tunnel Encapsulation TLV.  A truncated parameter set
-   MUST NOT be used, and the receiver MUST NOT bypass the endpoint
+   Deployments that carry MASQUE Tunnel Encapsulation TLVs SHOULD use
+   BGP Extended Messages [BGP-EXTENDED-MESSAGES] on the BGP sessions
+   over which the corresponding routes are propagated.  If BGP Extended
+   Messages are not available, URI Template Values MUST be kept small
+   enough that the complete BGP UPDATE message, including all path
+   attributes, NLRI, and protocol overhead, does not exceed 4096 octets.
+   These size considerations also apply to SVCB Parameters Sub-TLVs.
+   Advertisers MUST account for their combined size with the URI
+   Template and all other contents of the UPDATE, even when each Sub-TLV
+   fits its own Length field.  If an SVCB Parameters Sub-TLV exceeds a
+   receiver's supported or configured limit, the receiver SHOULD ignore
+   the enclosing MASQUE Tunnel Encapsulation TLV.  A truncated parameter
+   set MUST NOT be used, and the receiver MUST NOT bypass the endpoint
    validation requirements by discarding the Sub-TLV.
 
    If the URI Template Value exceeds the receiver's supported or

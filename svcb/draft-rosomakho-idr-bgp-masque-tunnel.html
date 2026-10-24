@@ -1588,6 +1588,10 @@ order. Values use the wire encoding specified for their respective keys.<a href=
 </dl>
 <p id="section-5-5">The encoding and self-consistency rules of <span>[<a href="#SVCB" class="cite xref">SVCB</a>]</span> apply to the SvcParams
 field. An empty SvcParams field is invalid.<a href="#section-5-5" class="pilcrow">¶</a></p>
+<p id="section-5-6">Validation of BGP parameters is independent of the receiving
+speaker's ability to establish a MASQUE tunnel.  Lack of support for
+a connection parameter or an advertised application-layer protocol
+does not, by itself, invalidate the BGP advertisement.<a href="#section-5-6" class="pilcrow">¶</a></p>
 <div id="endpoint-validation">
 <section id="section-5.1">
         <h3 id="name-endpoint-validation">
@@ -1609,10 +1613,6 @@ validated, if any, is left to the implementation. The
 validation of more than one address is out of scope for this document.
 An address found invalid is handled as specified in
 <a href="#masque-error-handling" class="auto internal xref">Section 5.3</a>.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
-<p id="section-5.1-3">Validation of BGP parameters is independent of the receiving speaker's ability
-to establish a MASQUE tunnel. Lack of support for a connection parameter or
-an advertised application-layer protocol does not, by itself, invalidate the
-BGP advertisement.<a href="#section-5.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="use-of-connection-parameters">
@@ -1651,7 +1651,7 @@ a malformed Tunnel Egress Endpoint Sub-TLV under
 <span><a href="https://rfc-editor.org/rfc/rfc9012#section-13" class="relref">Section 13</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>: the entire TLV <span class="bcp14">MUST</span> be ignored and
 removed from the attribute before propagation. The receiver <span class="bcp14">MUST NOT</span> retain
 such a TLV by discarding only the SVCB Parameters Sub-TLV or an invalid hint
-address. The remaining validation and error-handling rules of that section
+address. The remaining validation and error-handling rules of <span><a href="https://rfc-editor.org/rfc/rfc9012#section-13" class="relref">Section 13</a> of [<a href="#BGP-TUNNEL-ENCAP-ATTR" class="cite xref">BGP-TUNNEL-ENCAP-ATTR</a>]</span>
 apply, including treat-as-withdraw if no valid TLVs remain and the handling of
 framing errors in the enclosing attribute.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
 </section>
@@ -1769,7 +1769,7 @@ can significantly increase the size of the enclosing BGP UPDATE message and
 can affect propagation across BGP sessions where BGP Extended Messages
 <span>[<a href="#BGP-EXTENDED-MESSAGES" class="cite xref">BGP-EXTENDED-MESSAGES</a>]</span> are not used.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
 <p id="section-7.1-3">URI Template Values <span class="bcp14">SHOULD NOT</span> exceed 1024 octets and should be kept as short as practical.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
-<p id="section-7.1-4">Deployments that carry URI Template Sub-TLVs <span class="bcp14">SHOULD</span> use BGP Extended Messages
+<p id="section-7.1-4">Deployments that carry MASQUE Tunnel Encapsulation TLVs <span class="bcp14">SHOULD</span> use BGP Extended Messages
 <span>[<a href="#BGP-EXTENDED-MESSAGES" class="cite xref">BGP-EXTENDED-MESSAGES</a>]</span> on the BGP sessions over which the
 corresponding routes are propagated. If BGP Extended Messages are not available, URI Template
 Values <span class="bcp14">MUST</span> be kept small enough that the complete BGP UPDATE message,
