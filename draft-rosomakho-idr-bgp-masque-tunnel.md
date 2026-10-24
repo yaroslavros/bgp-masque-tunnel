@@ -311,6 +311,7 @@ Validation of BGP parameters is independent of the receiving
 speaker's ability to establish a MASQUE tunnel.  Lack of support for
 a connection parameter or an advertised application-layer protocol
 does not, by itself, invalidate the BGP advertisement.
+
 ## Endpoint Validation {#endpoint-validation}
 
 The URI Template's address literal and any addresses in `ipv4hint` or
