@@ -362,7 +362,7 @@ a malformed Tunnel Egress Endpoint Sub-TLV under
 {{Section 13 of BGP-TUNNEL-ENCAP-ATTR}}: the entire TLV MUST be ignored and
 removed from the attribute before propagation. The receiver MUST NOT retain
 such a TLV by discarding only the SVCB Parameters Sub-TLV or an invalid hint
-address. The remaining validation and error-handling rules of that section
+address. The remaining validation and error-handling rules of {{Section 13 of BGP-TUNNEL-ENCAP-ATTR}}
 apply, including treat-as-withdraw if no valid TLVs remain and the handling of
 framing errors in the enclosing attribute.
 
