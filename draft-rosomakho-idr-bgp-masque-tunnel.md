@@ -331,11 +331,6 @@ validation of more than one address is out of scope for this document.
 An address found invalid is handled as specified in
 {{masque-error-handling}}.
 
-Validation of BGP parameters is independent of the receiving speaker's ability
-to establish a MASQUE tunnel. Lack of support for a connection parameter or
-an advertised application-layer protocol does not, by itself, invalidate the
-BGP advertisement.
-
 ## Use of Connection Parameters
 
 Service parameter semantics and compatibility are defined in Sections 7 and 8
