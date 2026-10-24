@@ -317,11 +317,11 @@ Table of Contents
    handled as specified in Section 5.3.
 
    For the MASQUE tunnel types defined in this document, the endpoint
-   address requirements in Section 3 replace the requirement for a
-   Tunnel Egress Endpoint Sub-TLV in [BGP-TUNNEL-ENCAP-ATTR].  The
-   address is supplied by the URI Template when its host is an IPv4 or
-   IPv6 address literal, or by the IP address hints in the SVCB
-   Parameters Sub-TLV otherwise.
+   address requirements in Section 3 replace the need for a Tunnel
+   Egress Endpoint Sub-TLV in [BGP-TUNNEL-ENCAP-ATTR].  The address is
+   supplied by the URI Template when its host is an IPv4 or IPv6 address
+   literal, or by the IP address hints in the SVCB Parameters Sub-TLV
+   otherwise.
 
 5.  SVCB Parameters Sub-TLV
 
