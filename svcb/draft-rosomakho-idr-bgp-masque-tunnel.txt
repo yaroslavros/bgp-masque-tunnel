@@ -5,8 +5,8 @@
 IDR Working Group                                           Y. Rosomakho
 Internet-Draft                                                   Zscaler
 Intended status: Standards Track                               A. Retana
-Expires: 25 April 2027                      Futurewei Technologies, Inc.
-                                                         22 October 2026
+Expires: 27 April 2027                      Futurewei Technologies, Inc.
+                                                         24 October 2026
 
 
               BGP Signaling of MASQUE Tunnel Encapsulation
@@ -54,7 +54,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 25 April 2027.
+   This Internet-Draft will expire on 27 April 2027.
 
 Copyright Notice
 
@@ -204,8 +204,10 @@ Table of Contents
    in ipv4hint, ipv6hint, or both.  If the host is such an address
    literal, the SVCB Parameters Sub-TLV MAY be omitted.
 
-   Only the following Sub-TLVs are applicable to MASQUE Tunnel
-   Encapsulation TLVs:
+   A MASQUE Tunnel Encapsulation TLV that does not meet these
+   requirements MUST be handled as specified in Section 5.3.  Only the
+   following Sub-TLVs are applicable to MASQUE Tunnel Encapsulation
+   TLVs:
 
                         +=================+======+
                         | Sub-TLV         | Code |
