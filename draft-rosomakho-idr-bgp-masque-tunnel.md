@@ -318,9 +318,14 @@ configuration exceptions and treatment of valid but unreachable addresses.
 
 A receiver MAY apply the procedure in
 {{Section 3.1.1 of BGP-TUNNEL-ENCAP-ATTR}} to check whether these addresses
-belong to the AS that originated the route. Support for and use of this
-procedure are OPTIONAL. When used, its configuration and revalidation rules
-apply. An address found invalid is handled as specified in
+belong to the AS that originated the route.
+When used, its configuration and revalidation rules
+apply. If present, the URI Template's address literal
+MUST be the address used for validation, and any
+addresses in ipv4hint or ipv6hint SHOULD be ignored. The selection of which IP address hints should be
+validated, if any, is left to the implementation. The
+validation of more than one address is out of scope for this document.
+An address found invalid is handled as specified in
 {{masque-error-handling}}.
 
 Validation of BGP parameters is independent of the receiving speaker's ability
