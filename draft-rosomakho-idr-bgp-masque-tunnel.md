@@ -472,7 +472,7 @@ can affect propagation across BGP sessions where BGP Extended Messages
 
 URI Template Values SHOULD NOT exceed 1024 octets and should be kept as short as practical.
 
-Deployments that carry URI Template Sub-TLVs SHOULD use BGP Extended Messages
+Deployments that carry MASQUE Tunnel Encapsulation TLVs SHOULD use BGP Extended Messages
 {{BGP-EXTENDED-MESSAGES}} on the BGP sessions over which the
 corresponding routes are propagated. If BGP Extended Messages are not available, URI Template
 Values MUST be kept small enough that the complete BGP UPDATE message,
