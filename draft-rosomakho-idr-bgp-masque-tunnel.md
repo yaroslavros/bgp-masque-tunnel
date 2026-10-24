@@ -265,7 +265,7 @@ identified by the enclosing MASQUE Tunnel Encapsulation TLV, the MASQUE Tunnel
 Encapsulation TLV MUST be handled as specified in {{masque-error-handling}}.
 
 For the MASQUE tunnel types defined in this document, the endpoint address
-requirements in {{masque-tunnel-encapsulation}} replace the requirement for a Tunnel
+requirements in {{masque-tunnel-encapsulation}} replace the need for a Tunnel
 Egress Endpoint Sub-TLV in {{BGP-TUNNEL-ENCAP-ATTR}}. The address is supplied
 by the URI Template when its host is an IPv4 or IPv6 address literal, or by
 the IP address hints in the SVCB Parameters Sub-TLV otherwise.
